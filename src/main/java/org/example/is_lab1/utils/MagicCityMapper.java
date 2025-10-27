@@ -17,6 +17,4 @@ public interface MagicCityMapper {
 
     @Mapping(target = "id", ignore = true) // id не трогаем
     void updateEntityFromDto(MagicCityDTO dto, @MappingTarget MagicCity entity);
-
-
 }
