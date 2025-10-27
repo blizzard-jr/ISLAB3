@@ -1,0 +1,11 @@
+target/
+node_modules/
+.git/
+.gitignore
+*.md
+.DS_Store
+.idea/
+*.iml
+frontend/vueProj/node_modules/
+frontend/vueProj/dist/
+
