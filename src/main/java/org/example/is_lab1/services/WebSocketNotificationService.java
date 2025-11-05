@@ -11,18 +11,18 @@ public class WebSocketNotificationService {
 
     private final SimpMessagingTemplate messagingTemplate;
 
-    public void notifyCreated(String entityType, Integer entityId, Object payload) {
-        WebSocketMessage message = WebSocketMessage.created(entityType, entityId, payload);
+    public void notifyCreated(Integer entityId, Object payload) {
+        WebSocketMessage message = WebSocketMessage.created(entityId, payload);
         messagingTemplate.convertAndSend("/topic/entities", message);
     }
 
-    public void notifyUpdated(String entityType, Integer entityId, Object payload) {
-        WebSocketMessage message = WebSocketMessage.updated(entityType, entityId, payload);
+    public void notifyUpdated(Integer entityId, Object payload) {
+        WebSocketMessage message = WebSocketMessage.updated(entityId, payload);
         messagingTemplate.convertAndSend("/topic/entities", message);
     }
 
-    public void notifyDeleted(String entityType, Integer entityId) {
-        WebSocketMessage message = WebSocketMessage.deleted(entityType, entityId);
+    public void notifyDeleted(Integer entityId) {
+        WebSocketMessage message = WebSocketMessage.deleted(entityId);
         messagingTemplate.convertAndSend("/topic/entities", message);
     }
 

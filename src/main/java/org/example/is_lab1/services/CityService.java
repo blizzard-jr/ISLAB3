@@ -6,6 +6,10 @@ import org.example.is_lab1.models.dto.MagicCityDTO;
 import org.example.is_lab1.models.entity.MagicCity;
 import org.example.is_lab1.repository.CityRepository;
 import org.example.is_lab1.utils.MagicCityMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,7 +27,7 @@ public class CityService {
 //        MagicCity el = new MagicCity(city.name(), city.area(), city.population(), city.governor(), city.capital(), city.populationDensity());
         MagicCity el = mapper.toEntity(city);
         repository.save(el);
-        notificationService.notifyCreated("CITY", el.getId(), mapper.toDto(el));
+        notificationService.notifyCreated(el.getId(), mapper.toDto(el));
         return "CityService create";
     }
 
@@ -38,18 +42,19 @@ public class CityService {
 //        el.setPopulation(city.population());
 //        el.setPopulationDensity(city.populationDensity());
         repository.save(el);
-        notificationService.notifyUpdated("CITY", id, mapper.toDto(el));
+        notificationService.notifyUpdated(id, mapper.toDto(el));
         return "CityService modify";
     }
 
     public String delete(int id){
         repository.deleteById(id);
-        notificationService.notifyDeleted("CITY", id);
+        notificationService.notifyDeleted(id);
         return "CityService delete";
     }
 
-    public List<MagicCityDTO> getAll(){
-        return repository.findAll().stream().map(x -> mapper.toDto(x)).toList();
+    public Page<MagicCityDTO> get(int page){
+        Pageable pageable = PageRequest.of(page, 10);
+        return repository.findAll(pageable).map(mapper::toDto);
     }
 
     public MagicCityDTO getById(int id){

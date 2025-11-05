@@ -6,10 +6,12 @@ import org.example.is_lab1.models.dto.RingDTO;
 import org.example.is_lab1.models.entity.Ring;
 import org.example.is_lab1.repository.RingRepository;
 import org.example.is_lab1.utils.RingMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -23,7 +25,7 @@ public class RingService {
 //        Ring el = new Ring(ring.name(), ring.power(), ring.weight());
         Ring el = mapper.toEntity(ring);
         repository.save(el);
-        notificationService.notifyCreated("RING", el.getId(), mapper.toDto(el));
+        notificationService.notifyCreated(el.getId(), mapper.toDto(el));
         return "RingService create";
     }
 
@@ -35,18 +37,19 @@ public class RingService {
 //        el.setWeight(ring.weight());
         mapper.updateEntityFromDto(ring, el);
         repository.save(el);
-        notificationService.notifyUpdated("RING", id, mapper.toDto(el));
+        notificationService.notifyUpdated(id, mapper.toDto(el));
         return "RingService modify";
     }
 
     public String delete(int id){
         repository.deleteById(id);
-        notificationService.notifyDeleted("RING", id);
+        notificationService.notifyDeleted(id);
         return "RingService delete";
     }
 
-    public List<RingDTO> getAll(){
-        return repository.findRingsWithoutOwner().stream().map(x -> mapper.toDto(x)).toList();
+    public Page<RingDTO> get(int page){
+        Pageable pageable = PageRequest.of(page, 10);
+        return repository.findRingsWithoutOwner(pageable).map(mapper::toDto);
     }
 
     public RingDTO getById(int id){

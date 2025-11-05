@@ -5,6 +5,8 @@ import org.example.is_lab1.models.dto.MagicCityDTO;
 import org.example.is_lab1.models.entity.MagicCity;
 import org.example.is_lab1.services.CityService;
 import org.example.is_lab1.services.InteractService;
+import org.example.is_lab1.utils.MagicCityMapper;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,7 +17,7 @@ import java.util.List;
 public class CityController {
     private final CityService service;
 
-    public CityController(CityService service) {
+    public CityController(CityService service, MagicCityMapper mapper) {
         this.service = service;
     }
 
@@ -38,8 +40,8 @@ public class CityController {
     }
 
     @GetMapping("/view")
-    public ResponseEntity<List<MagicCityDTO>> getAll(){
-        return ResponseEntity.ok(service.getAll());
+    public ResponseEntity<Page<MagicCityDTO>> get(@RequestParam int page){
+        return ResponseEntity.ok(service.get(page));
     }
 
     @GetMapping("/view/{id}")

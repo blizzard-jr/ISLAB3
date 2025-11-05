@@ -137,6 +137,79 @@
           
           <div v-if="hasLocation" class="space-y-4 pl-4 border-l-2 border-blue-200">
             <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">
+                Выберите город
+              </label>
+              <div class="mb-2">
+                <label class="flex items-center gap-2 mb-2">
+                  <input
+                    v-model="selectExistingCity"
+                    type="radio"
+                    :value="true"
+                    @change="loadCities(1)"
+                    class="rounded border-gray-300"
+                  />
+                  <span class="text-sm text-gray-700">Выбрать существующий город</span>
+                </label>
+                <label class="flex items-center gap-2">
+                  <input
+                    v-model="selectExistingCity"
+                    type="radio"
+                    :value="false"
+                    class="rounded border-gray-300"
+                  />
+                  <span class="text-sm text-gray-700">Создать новый город</span>
+                </label>
+              </div>
+              
+              <div v-if="selectExistingCity" class="space-y-2">
+                <select
+                  v-model="selectedCityId"
+                  class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                  @change="onCitySelected"
+                >
+                  <option :value="null">Выберите город</option>
+                  <option
+                    v-for="city in cities"
+                    :key="city.id"
+                    :value="city.id"
+                  >
+                    {{ city.name }} ({{ city.population }} жителей)
+                  </option>
+                </select>
+                
+                <!-- Пагинация для городов -->
+                <div v-if="citiesTotalPages > 1" class="flex items-center justify-between mt-2">
+                  <div class="text-xs text-gray-600">
+                    Страница {{ citiesCurrentPage }} из {{ citiesTotalPages }}
+                  </div>
+                  <div class="flex gap-1">
+                    <button
+                      type="button"
+                      @click="changeCitiesPage(citiesCurrentPage - 1)"
+                      :disabled="citiesCurrentPage === 1"
+                      class="px-2 py-1 text-xs border border-gray-300 rounded hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      ←
+                    </button>
+                    <span class="px-2 py-1 text-xs border border-gray-300 rounded bg-blue-50">
+                      {{ citiesCurrentPage }}
+                    </span>
+                    <button
+                      type="button"
+                      @click="changeCitiesPage(citiesCurrentPage + 1)"
+                      :disabled="citiesCurrentPage >= citiesTotalPages"
+                      class="px-2 py-1 text-xs border border-gray-300 rounded hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      →
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div v-if="!selectExistingCity" class="space-y-4">
+            <div>
               <label class="block text-sm font-medium text-gray-700 mb-1">
                 Название <span class="text-red-500">*</span>
               </label>
@@ -225,6 +298,7 @@
                 class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
               />
             </div>
+            </div>
           </div>
         </div>
 
@@ -243,6 +317,79 @@
           </div>
           
           <div v-if="hasRing" class="space-y-4 pl-4 border-l-2 border-yellow-200">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">
+                Выберите кольцо
+              </label>
+              <div class="mb-2">
+                <label class="flex items-center gap-2 mb-2">
+                  <input
+                    v-model="selectExistingRing"
+                    type="radio"
+                    :value="true"
+                    @change="loadRings(1)"
+                    class="rounded border-gray-300"
+                  />
+                  <span class="text-sm text-gray-700">Выбрать существующее кольцо</span>
+                </label>
+                <label class="flex items-center gap-2">
+                  <input
+                    v-model="selectExistingRing"
+                    type="radio"
+                    :value="false"
+                    class="rounded border-gray-300"
+                  />
+                  <span class="text-sm text-gray-700">Создать новое кольцо</span>
+                </label>
+              </div>
+              
+              <div v-if="selectExistingRing" class="space-y-2">
+                <select
+                  v-model="selectedRingId"
+                  class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                  @change="onRingSelected"
+                >
+                  <option :value="null">Выберите кольцо</option>
+                  <option
+                    v-for="ring in rings"
+                    :key="ring.id"
+                    :value="ring.id"
+                  >
+                    {{ ring.name }} (Сила: {{ ring.power }}, Вес: {{ ring.weight }})
+                  </option>
+                </select>
+                
+                <!-- Пагинация для колец -->
+                <div v-if="ringsTotalPages > 1" class="flex items-center justify-between mt-2">
+                  <div class="text-xs text-gray-600">
+                    Страница {{ ringsCurrentPage }} из {{ ringsTotalPages }}
+                  </div>
+                  <div class="flex gap-1">
+                    <button
+                      type="button"
+                      @click="changeRingsPage(ringsCurrentPage - 1)"
+                      :disabled="ringsCurrentPage === 1"
+                      class="px-2 py-1 text-xs border border-gray-300 rounded hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      ←
+                    </button>
+                    <span class="px-2 py-1 text-xs border border-gray-300 rounded bg-blue-50">
+                      {{ ringsCurrentPage }}
+                    </span>
+                    <button
+                      type="button"
+                      @click="changeRingsPage(ringsCurrentPage + 1)"
+                      :disabled="ringsCurrentPage >= ringsTotalPages"
+                      class="px-2 py-1 text-xs border border-gray-300 rounded hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      →
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div v-if="!selectExistingRing" class="space-y-4">
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-1">
                 Название <span class="text-red-500">*</span>
@@ -279,6 +426,7 @@
                   class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                 />
               </div>
+            </div>
             </div>
           </div>
         </div>
@@ -322,6 +470,20 @@ const emit = defineEmits<{
 
 const hasLocation = ref(false)
 const hasRing = ref(false)
+const selectExistingCity = ref(false)
+const selectExistingRing = ref(false)
+
+// Состояние для городов
+const cities = ref([])
+const citiesCurrentPage = ref(1)
+const citiesTotalPages = ref(0)
+const selectedCityId = ref<number | null>(null)
+
+// Состояние для колец
+const rings = ref([])
+const ringsCurrentPage = ref(1)
+const ringsTotalPages = ref(0)
+const selectedRingId = ref<number | null>(null)
 
 const formData = ref({
   name: '',
@@ -370,8 +532,71 @@ watch(hasRing, (newValue) => {
       power: null,
       weight: null
     }
+    selectedRingId.value = null
+    selectExistingRing.value = false
   }
 })
+
+watch(hasLocation, (newValue) => {
+  if (!newValue) {
+    selectedCityId.value = null
+    selectExistingCity.value = false
+  }
+})
+
+// Загрузка городов
+async function loadCities(page = 1) {
+  try {
+    const data = await api.getCities(page)
+    cities.value = data.content
+    citiesCurrentPage.value = data.currentPage
+    citiesTotalPages.value = data.totalPages
+  } catch (error) {
+    console.error('Ошибка загрузки городов:', error)
+    alert('Ошибка при загрузке городов')
+  }
+}
+
+// Загрузка колец
+async function loadRings(page = 1) {
+  try {
+    const data = await api.getRings(page)
+    rings.value = data.content
+    ringsCurrentPage.value = data.currentPage
+    ringsTotalPages.value = data.totalPages
+  } catch (error) {
+    console.error('Ошибка загрузки колец:', error)
+    alert('Ошибка при загрузке колец')
+  }
+}
+
+// Смена страницы городов
+function changeCitiesPage(page: number) {
+  citiesCurrentPage.value = page
+  loadCities(page)
+}
+
+// Смена страницы колец
+function changeRingsPage(page: number) {
+  ringsCurrentPage.value = page
+  loadRings(page)
+}
+
+// Обработка выбора города
+function onCitySelected() {
+  if (selectedCityId.value) {
+    // Можно загрузить полные данные города если нужно
+    // Пока просто используем id
+  }
+}
+
+// Обработка выбора кольца
+function onRingSelected() {
+  if (selectedRingId.value) {
+    // Можно загрузить полные данные кольца если нужно
+    // Пока просто используем id
+  }
+}
 
 async function loadCreature() {
   if (!props.creatureId) return
@@ -399,6 +624,23 @@ async function loadCreature() {
 
     hasLocation.value = !!data.creatureLocation
     hasRing.value = !!data.ring
+    
+    // Если при редактировании уже есть город/кольцо, устанавливаем их id
+    if (data.creatureLocation?.id) {
+      selectedCityId.value = data.creatureLocation.id
+      selectExistingCity.value = true
+      // Загружаем список городов и ищем нужную страницу
+      await loadCities(1)
+      // Если выбранный город не на первой странице, нужно найти его страницу
+      // Пока просто загружаем первую страницу, пользователь сможет найти нужный город
+    }
+    
+    if (data.ring?.id) {
+      selectedRingId.value = data.ring.id
+      selectExistingRing.value = true
+      // Загружаем список колец
+      await loadRings(1)
+    }
   } catch (error) {
     console.error('Ошибка загрузки объекта:', error)
     alert('Ошибка при загрузке данных объекта')
@@ -406,10 +648,35 @@ async function loadCreature() {
 }
 
 async function handleSubmit() {
+  let creatureLocation = null
+  let ring = null
+  
+  // Формируем данные локации
+  if (hasLocation.value) {
+    if (selectExistingCity.value && selectedCityId.value) {
+      // Используем существующий город - передаем только id
+      creatureLocation = { id: selectedCityId.value }
+    } else {
+      // Создаем новый город - передаем все данные
+      creatureLocation = formData.value.creatureLocation
+    }
+  }
+  
+  // Формируем данные кольца
+  if (hasRing.value) {
+    if (selectExistingRing.value && selectedRingId.value) {
+      // Используем существующее кольцо - передаем только id
+      ring = { id: selectedRingId.value }
+    } else {
+      // Создаем новое кольцо - передаем все данные
+      ring = formData.value.ring
+    }
+  }
+  
   const submitData = {
     ...formData.value,
-    creatureLocation: hasLocation.value ? formData.value.creatureLocation : null,
-    ring: hasRing.value ? formData.value.ring : null
+    creatureLocation,
+    ring
   }
 
   try {
@@ -420,7 +687,6 @@ async function handleSubmit() {
       await api.updateCreature(props.creatureId, submitData)
       alert('Объект успешно обновлен!')
     }
-    await api.getAllCreatures()
 
     emit('saved')
   } catch (error) {

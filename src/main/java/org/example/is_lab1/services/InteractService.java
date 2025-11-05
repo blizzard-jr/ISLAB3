@@ -8,6 +8,8 @@ import org.example.is_lab1.repository.CityRepository;
 import org.example.is_lab1.repository.InteractRepository;
 import org.example.is_lab1.repository.RingRepository;
 import org.example.is_lab1.utils.BookCreatureMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,21 +41,8 @@ public class InteractService {
 //        Ring ring = new Ring(creature.ring().name(), creature.ring().power(), creature.ring().weight());
 //        BookCreature el = new BookCreature(creature.name(), coordinates, creature.age(), creatureType, creatureLocation, creature.attackLevel(), creature.defenseLevel(), ring);
         BookCreature el = mapper.toEntity(creature);
-        // ⚙️ Если город уже существует — берём ссылку, а не создаём новый
-        if (creature.creatureLocation() != null && creature.creatureLocation().id() != 0) {
-            el.setCreatureLocation(
-                    cityRepository.getReferenceById(creature.creatureLocation().id())
-            );
-        }
-
-        // ⚙️ Если кольцо уже существует — берём ссылку, а не создаём новый
-        if (creature.ring() != null && creature.ring().id() != 0) {
-            el.setRing(
-                    ringRepository.getReferenceById(creature.ring().id())
-            );
-        }
         repository.save(el);
-        notificationService.notifyCreated("CREATURE", el.getId(), mapper.toDto(el));
+        notificationService.notifyCreated(el.getId(), mapper.toDto(el));
         return "Finish create";
     }
 
@@ -76,7 +65,7 @@ public class InteractService {
 //        existing.setRing(ring);
 
         repository.save(existing);
-        notificationService.notifyUpdated("CREATURE", id, mapper.toDto(existing));
+        notificationService.notifyUpdated(id, mapper.toDto(existing));
         return "Finish modify";
     }
 
@@ -97,12 +86,19 @@ public class InteractService {
             }
         }
         repository.deleteById(id);
-        notificationService.notifyDeleted("CREATURE", id);
+        notificationService.notifyDeleted(id);
         return "Finish delete";
     }
 
-    public List<BookCreatureDTO> getAll(){
-        return repository.findAll().stream().map(x -> mapper.toDto(x)).toList();
+    public Page<BookCreatureDTO> get(Pageable pageable, String filter){
+        Page<BookCreature> page;
+        if (filter != null && !filter.isEmpty()) {
+            page  = repository.findByNameContainingIgnoreCase(filter, pageable);
+        } else {
+            page = repository.findAll(pageable);
+        }
+
+        return page.map(mapper::toDto);
     }
 
     public BookCreatureDTO getById(int id){

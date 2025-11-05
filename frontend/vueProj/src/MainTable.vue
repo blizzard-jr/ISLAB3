@@ -38,6 +38,16 @@
             <option value="defenseLevel">По защите</option>
             <option value="creationDate">По дате создания</option>
           </select>
+          <select
+            v-if="sortField"
+            v-model="sortDirection"
+            @change="handleSortDirection"
+            class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+            title="Направление сортировки"
+          >
+            <option value="asc">По возрастанию ↑</option>
+            <option value="desc">По убыванию ↓</option>
+          </select>
         </div>
 
          Таблица 
@@ -231,6 +241,7 @@ const totalItems = ref(0)
 const totalPages = ref(0)
 const searchQuery = ref('')
 const sortField = ref('')
+const sortDirection = ref<'asc' | 'desc'>('asc')
 
 const showCreateMenu = ref(false)
 const showCreatureDialog = ref(false)
@@ -254,7 +265,8 @@ async function fetchCreatures() {
       page: currentPage.value,
       size: pageSize.value,
       search: searchQuery.value,
-      sort: sortField.value
+      sort: sortField.value,
+      direction: sortDirection.value
     })
     
     creatures.value = data.content
@@ -364,6 +376,12 @@ function handleSearch() {
 }
 
 function handleSort() {
+  currentPage.value = 1
+  fetchCreatures()
+}
+
+function handleSortDirection() {
+  currentPage.value = 1
   fetchCreatures()
 }
 
@@ -380,24 +398,70 @@ function formatDate(dateString: string): string {
 }
 
 function handleWebSocketMessage(message) {
-  const { type, entityType, entityId, payload } = message
+  const { action, entityId, payload } = message
 
+  // Определяем тип сущности по структуре payload
+  // BookCreature имеет поля: creatureType, age, coordinates, attackLevel, defenseLevel
+  // Ring имеет поля: name, power, weight (нет creatureType, age, coordinates)
+  // MagicCity имеет поля: area, population, governor, capital, populationDensity (нет creatureType, age, coordinates)
+  let entityType = null
+  if (payload) {
+    if ('creatureType' in payload || ('age' in payload && 'coordinates' in payload)) {
+      entityType = 'CREATURE'
+    } else if ('power' in payload && 'weight' in payload && !('area' in payload) && !('creatureType' in payload)) {
+      entityType = 'RING'
+    } else if (('area' in payload || 'population' in payload || 'governor' in payload) && !('creatureType' in payload)) {
+      entityType = 'CITY'
+    }
+  }
+
+  // Для DELETED без payload проверяем по ID - если объект есть в списке creatures, то это CREATURE
+  if (!entityType && action === 'DELETED') {
+    const existsInList = creatures.value.some(c => c.id === entityId)
+    if (existsInList) {
+      entityType = 'CREATURE'
+    } else {
+      // Не можем определить тип, пропускаем (может быть другая сущность)
+      return
+    }
+  }
+
+  // Обрабатываем только сообщения о BookCreature
   if (entityType !== 'CREATURE') {
     return
   }
 
-  switch (type) {
+  switch (action) {
     case 'CREATED':
-      if (!creatures.value.some(c => c.id === entityId)) {
-        creatures.value.push(payload)
-        totalItems.value++
+      // Добавляем новый объект, если его еще нет в списке
+      if (payload && !creatures.value.some(c => c.id === entityId)) {
+        // Проверяем, соответствует ли объект текущим фильтрам/поиску
+        // Если поиск активен, проверяем соответствие
+        if (!searchQuery.value || payload.name?.toLowerCase().includes(searchQuery.value.toLowerCase())) {
+          creatures.value.push(payload)
+          totalItems.value++
+          // Если список стал слишком большим, перезагружаем данные
+          if (creatures.value.length > pageSize.value) {
+            fetchCreatures()
+          }
+        } else {
+          // Объект не соответствует фильтрам, но увеличиваем счетчик
+          totalItems.value++
+        }
       }
       break
 
     case 'UPDATED':
-      const updateIndex = creatures.value.findIndex(c => c.id === entityId)
-      if (updateIndex !== -1) {
-        creatures.value[updateIndex] = payload
+      if (payload) {
+        const updateIndex = creatures.value.findIndex(c => c.id === entityId)
+        if (updateIndex !== -1) {
+          // Обновляем существующий объект
+          creatures.value[updateIndex] = payload
+        } else {
+          // Объект не в текущем списке, но может соответствовать фильтрам
+          // Перезагружаем данные чтобы убедиться
+          fetchCreatures()
+        }
       }
       break
 
@@ -406,6 +470,16 @@ function handleWebSocketMessage(message) {
       if (deleteIndex !== -1) {
         creatures.value.splice(deleteIndex, 1)
         totalItems.value--
+        // Если после удаления на текущей странице осталось мало элементов,
+        // и мы не на первой странице, можно вернуться на предыдущую
+        if (creatures.value.length === 0 && currentPage.value > 1) {
+          currentPage.value--
+          fetchCreatures()
+        }
+      } else {
+        // Объект был удален, но его не было в текущем списке
+        // Перезагружаем данные для актуализации (может быть изменился totalItems)
+        fetchCreatures()
       }
       break
   }

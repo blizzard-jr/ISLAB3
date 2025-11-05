@@ -6,6 +6,7 @@ import org.example.is_lab1.models.dto.MagicCityDTO;
 import org.example.is_lab1.models.dto.RingDTO;
 import org.example.is_lab1.services.CityService;
 import org.example.is_lab1.services.RingService;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,9 +39,10 @@ public class RingController {
         return ResponseEntity.ok(result);
     }
 
+
     @GetMapping("/view")
-    public ResponseEntity<List<RingDTO>> getAll(){
-        return ResponseEntity.ok(service.getAll());
+    public ResponseEntity<Page<RingDTO>> get(@RequestParam int page){
+        return ResponseEntity.ok(service.get(page));
     }
 
     @GetMapping("/view/{id}")

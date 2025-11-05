@@ -3,6 +3,10 @@ package org.example.is_lab1.controllers;
 import lombok.RequiredArgsConstructor;
 import org.example.is_lab1.models.dto.BookCreatureDTO;
 import org.example.is_lab1.services.InteractService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,8 +40,18 @@ public class InteractController {
     }
 
     @GetMapping("/view")
-    public ResponseEntity<List<BookCreatureDTO>> getAll(){
-        return ResponseEntity.ok(service.getAll());
+    public ResponseEntity<Page<BookCreatureDTO>> getAll(@RequestParam(defaultValue = "0") int page,
+                                                        @RequestParam(required = false) String filter,
+                                                        @RequestParam(required = false) String sort,
+                                                        @RequestParam(required = false) String direction){
+        Pageable pageable = PageRequest.of(page, 10);
+
+        if (sort != null && !sort.isEmpty()) {
+            Sort.Direction sortDirection =
+                    "desc".equalsIgnoreCase(direction) ? Sort.Direction.DESC : Sort.Direction.ASC;
+            pageable = PageRequest.of(page, 10, Sort.by(sortDirection, sort));
+        }
+        return ResponseEntity.ok(service.get(pageable, filter));
     }
 
     @GetMapping("/view/{id}")

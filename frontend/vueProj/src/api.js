@@ -2,92 +2,45 @@
 const API_BASE_URL = '/api'
 
 export const api = {
-  // Получить все объекты (с пагинацией и фильтрацией)
+  // Получить все объекты (с пагинацией и фильтрацией на сервере)
   async getAllCreatures(params = {}) {
-    // TODO: Реализовать когда будет ручка на бекенде
     const queryParams = new URLSearchParams()
-    if (params.page) queryParams.append('page', params.page)
-    if (params.size) queryParams.append('size', params.size)
-    if (params.search) queryParams.append('search', params.search)
-    if (params.sort) queryParams.append('sort', params.sort)
     
-    // Временная заглушка
+    // Конвертируем 1-based в 0-based для Spring
+    const page = (params.page || 1) - 1
+    queryParams.append('page', page)
+    
+    if (params.search) queryParams.append('filter', params.search)
+    if (params.sort) queryParams.append('sort', params.sort)
+    if (params.direction) queryParams.append('direction', params.direction)
+    
+    const response = await fetch(`${API_BASE_URL}/view?${queryParams}`)
+    
+    if (!response.ok) {
+      const error = await response.text()
+      throw new Error(error || 'Ошибка получения объектов')
+    }
+    
+    const data = await response.json()
+    
+    // Spring возвращает: { content: [...], totalElements: X, totalPages: Y, number: Z, ... }
+    // Конвертируем обратно в 1-based для фронтенда
     return {
-      content: [
-        {
-          id: 1,
-          name: 'Фродо Бэггинс',
-          coordinates: { x: 10, y: 20.5 },
-          creationDate: new Date().toISOString(),
-          age: 50,
-          creatureType: 'HOBBIT',
-          creatureLocation: {
-            name: 'Шир',
-            area: 1000,
-            population: 5000,
-            establishmentDate: '2024-01-01T00:00:00',
-            governor: 'HOBBIT',
-            capital: true,
-            populationDensity: 5
-          },
-          attackLevel: 15.5,
-          defenseLevel: 25.0,
-          ring: {
-            name: 'Единое Кольцо',
-            power: 9999,
-            weight: 0.5
-          }
-        },
-        {
-          id: 2,
-          name: 'Леголас',
-          coordinates: { x: 100, y: 150.3 },
-          creationDate: new Date().toISOString(),
-          age: 2931,
-          creatureType: 'ELF',
-          creatureLocation: null,
-          attackLevel: 95.0,
-          defenseLevel: 80.0,
-          ring: null
-        }
-      ],
-      totalElements: 2,
-      totalPages: 1
+      content: data.content,
+      totalElements: data.totalElements,
+      totalPages: data.totalPages,
+      currentPage: data.number + 1 // Конвертируем 0-based → 1-based
     }
   },
 
   // Получить один объект по ID
   async getCreatureById(id) {
-    // TODO: Реализовать когда будет ручка на бекенде
-    // const response = await fetch(`${API_BASE_URL}/get/${id}`)
-    // if (!response.ok) throw new Error('Ошибка получения объекта')
-    // return await response.json()
-    
-    // Временная заглушка
-    return {
-      id: id,
-      name: 'Фродо Бэггинс',
-      coordinates: { x: 10, y: 20.5 },
-      creationDate: new Date().toISOString(),
-      age: 50,
-      creatureType: 'HOBBIT',
-      creatureLocation: {
-        name: 'Шир',
-        area: 1000,
-        population: 5000,
-        establishmentDate: '2024-01-01T00:00:00',
-        governor: 'HOBBIT',
-        capital: true,
-        populationDensity: 5
-      },
-      attackLevel: 15.5,
-      defenseLevel: 25.0,
-      ring: {
-        name: 'Единое Кольцо',
-        power: 9999,
-        weight: 0.5
-      }
+    const response = await fetch(`${API_BASE_URL}/view/${id}`)
+    if (!response.ok) {
+      const error = await response.text()
+      throw new Error(error || 'Ошибка получения объекта')
     }
+    return await response.json()
   },
 
   // Создать новый объект
@@ -105,7 +58,8 @@ export const api = {
       throw new Error(error || 'Ошибка создания объекта')
     }
     
-    return await response.json()
+    // Бэкенд возвращает строку, а не JSON
+    return await response.text()
   },
 
   // Обновить объект
@@ -123,7 +77,8 @@ export const api = {
       throw new Error(error || 'Ошибка обновления объекта')
     }
     
-    return await response.json()
+    // Бэкенд возвращает строку, а не JSON
+    return await response.text()
   },
 
   // Удалить объект
@@ -140,17 +95,47 @@ export const api = {
     return true
   },
 
-  async getAllCreatures() {
-    const response = await fetch(`${API_BASE_URL}/view`, {
-      method: 'GET'
-    })
+  // Получить города с пагинацией
+  async getCities(page = 1) {
+    // Конвертируем 1-based в 0-based для Spring
+    const backendPage = page - 1
+    const response = await fetch(`${API_BASE_URL}/city/view?page=${backendPage}`)
     
     if (!response.ok) {
       const error = await response.text()
-      throw new Error(error || 'Ошибка получения объектов')
+      throw new Error(error || 'Ошибка получения городов')
     }
     
-    return await response.json()
+    const data = await response.json()
+    
+    return {
+      content: data.content,
+      totalElements: data.totalElements,
+      totalPages: data.totalPages,
+      currentPage: data.number + 1
+    }
+  },
+
+  // Получить кольца с пагинацией
+  async getRings(page = 1) {
+    // Конвертируем 1-based в 0-based для Spring
+    const backendPage = page - 1
+    const response = await fetch(`${API_BASE_URL}/ring/view?page=${backendPage}`)
+    
+    if (!response.ok) {
+      const error = await response.text()
+      throw new Error(error || 'Ошибка получения колец')
+    }
+    
+    const data = await response.json()
+    
+    return {
+      content: data.content,
+      totalElements: data.totalElements,
+      totalPages: data.totalPages,
+      currentPage: data.number + 1
+    }
   }
+
 }
 
