@@ -1,0 +1,1849 @@
+creatures:
+  - name: "HUMAN_10_0000"
+    age: 67
+    creatureType: "HUMAN"
+    defenseLevel: 23.3
+    attackLevel: 49.7
+    coordinates:
+      x: 941
+      y: -433.8
+    creatureLocation:
+      name: "Fangorn"
+      area: 25000
+      population: 100
+      governor: "ELF"
+      capital: false
+      populationDensity: 4
+
+  - name: "ORC_10_0001"
+    age: 116
+    creatureType: "GOLLUM"
+    defenseLevel: 39.4
+    attackLevel: 22.9
+    coordinates:
+      x: -457
+      y: -78.6
+    creatureLocation:
+      name: "Isengard"
+      area: 10000
+      population: 5000
+      governor: "GOLLUM"
+      capital: false
+      populationDensity: 500
+
+  - name: "WIZARD_10_0002"
+    age: 142
+    creatureType: "HUMAN"
+    defenseLevel: 41.7
+    attackLevel: 7.0
+    coordinates:
+      x: 1081
+      y: -144.0
+    creatureLocation:
+      name: "Mordor"
+      area: 150000
+      population: 50000
+      governor: "GOLLUM"
+      capital: true
+      populationDensity: 333
+    ring:
+      name: "Ancient Ring"
+      power: 582
+      weight: 0.94
+
+  - name: "ELF_10_0003"
+    age: 2845
+    creatureType: "ELF"
+    defenseLevel: 39.4
+    attackLevel: 26.5
+    coordinates:
+      x: 195
+      y: 1136.7
+    creatureLocation:
+      name: "Rohan"
+      area: 30000
+      population: 20000
+      governor: "HUMAN"
+      capital: true
+      populationDensity: 666
+
+  - name: "GOLLUM_10_0004"
+    age: 129
+    creatureType: "GOLLUM"
+    defenseLevel: 32.1
+    attackLevel: 6.4
+    coordinates:
+      x: 1590
+      y: -43.3
+    creatureLocation:
+      name: "Gondor"
+      area: 50000
+      population: 100000
+      governor: "HUMAN"
+      capital: true
+      populationDensity: 2000
+
+  - name: "HOBBIT_10_0005"
+    age: 146
+    creatureType: "HOBBIT"
+    defenseLevel: 40.0
+    attackLevel: 21.2
+    coordinates:
+      x: 1943
+      y: 863.9
+    creatureLocation:
+      name: "Isengard"
+      area: 10000
+      population: 5000
+      governor: "GOLLUM"
+      capital: false
+      populationDensity: 500
+
+  - name: "WIZARD_10_0006"
+    age: 70
+    creatureType: "HUMAN"
+    defenseLevel: 47.2
+    attackLevel: 20.6
+    coordinates:
+      x: 1050
+      y: 1470.2
+    creatureLocation:
+      name: "Lothlorien"
+      area: 8000
+      population: 1500
+      governor: "ELF"
+      capital: true
+      populationDensity: 187
+    ring:
+      name: "Vilya"
+      power: 288
+      weight: 1.62
+
+  - name: "DWARF_10_0007"
+    age: 44
+    creatureType: "HUMAN"
+    defenseLevel: 27.3
+    attackLevel: 50.0
+    coordinates:
+      x: 596
+      y: -307.5
+    creatureLocation:
+      name: "Shire"
+      area: 5000
+      population: 1000
+      governor: "HOBBIT"
+      capital: true
+      populationDensity: 200
+
+  - name: "WIZARD_10_0008"
+    age: 68
+    creatureType: "HUMAN"
+    defenseLevel: 47.7
+    attackLevel: 18.5
+    coordinates:
+      x: 681
+      y: 1388.3
+    creatureLocation:
+      name: "Dale"
+      area: 8000
+      population: 5000
+      governor: "HUMAN"
+      capital: false
+      populationDensity: 625
+
+  - name: "WIZARD_10_0009"
+    age: 73
+    creatureType: "HUMAN"
+    defenseLevel: 20.4
+    attackLevel: 16.8
+    coordinates:
+      x: -3
+      y: 1374.7
+    creatureLocation:
+      name: "Misty Mountains"
+      area: 20000
+      population: 50
+      governor: "GOLLUM"
+      capital: false
+      populationDensity: 2
+
+  - name: "HOBBIT_10_0010"
+    age: 113
+    creatureType: "HOBBIT"
+    defenseLevel: 48.8
+    attackLevel: 32.9
+    coordinates:
+      x: -112
+      y: 1789.6
+    creatureLocation:
+      name: "Fangorn"
+      area: 25000
+      population: 100
+      governor: "ELF"
+      capital: false
+      populationDensity: 4
+
+  - name: "HOBBIT_10_0011"
+    age: 133
+    creatureType: "HOBBIT"
+    defenseLevel: 23.5
+    attackLevel: 46.0
+    coordinates:
+      x: -58
+      y: 1511.7
+    creatureLocation:
+      name: "Helm's Deep"
+      area: 5000
+      population: 3000
+      governor: "HUMAN"
+      capital: false
+      populationDensity: 600
+
+  - name: "ORC_10_0012"
+    age: 24
+    creatureType: "GOLLUM"
+    defenseLevel: 49.5
+    attackLevel: 37.2
+    coordinates:
+      x: 1806
+      y: 1683.7
+    creatureLocation:
+      name: "Mirkwood"
+      area: 10000
+      population: 2000
+      governor: "ELF"
+      capital: true
+      populationDensity: 200
+    ring:
+      name: "Ring of Power"
+      power: 672
+      weight: 0.14
+
+  - name: "ELF_10_0013"
+    age: 3401
+    creatureType: "ELF"
+    defenseLevel: 12.1
+    attackLevel: 18.3
+    coordinates:
+      x: 168
+      y: -184.2
+    creatureLocation:
+      name: "Helm's Deep"
+      area: 5000
+      population: 3000
+      governor: "HUMAN"
+      capital: false
+      populationDensity: 600
+    ring:
+      name: "Ancient Ring"
+      power: 668
+      weight: 1.24
+
+  - name: "GOLLUM_10_0014"
+    age: 88
+    creatureType: "GOLLUM"
+    defenseLevel: 27.8
+    attackLevel: 19.5
+    coordinates:
+      x: 784
+      y: -374.3
+    creatureLocation:
+      name: "Rohan"
+      area: 30000
+      population: 20000
+      governor: "HUMAN"
+      capital: true
+      populationDensity: 666
+
+  - name: "ELF_10_0015"
+    age: 1123
+    creatureType: "ELF"
+    defenseLevel: 15.3
+    attackLevel: 13.4
+    coordinates:
+      x: 424
+      y: 701.7
+    creatureLocation:
+      name: "Fangorn"
+      area: 25000
+      population: 100
+      governor: "ELF"
+      capital: false
+      populationDensity: 4
+
+  - name: "WIZARD_10_0016"
+    age: 103
+    creatureType: "HUMAN"
+    defenseLevel: 10.8
+    attackLevel: 49.7
+    coordinates:
+      x: 1411
+      y: 1832.5
+    creatureLocation:
+      name: "Isengard"
+      area: 10000
+      population: 5000
+      governor: "GOLLUM"
+      capital: false
+      populationDensity: 500
+
+  - name: "GOLLUM_10_0017"
+    age: 48
+    creatureType: "GOLLUM"
+    defenseLevel: 7.5
+    attackLevel: 38.0
+    coordinates:
+      x: -16
+      y: 1398.4
+    creatureLocation:
+      name: "Helm's Deep"
+      area: 5000
+      population: 3000
+      governor: "HUMAN"
+      capital: false
+      populationDensity: 600
+
+  - name: "HOBBIT_10_0018"
+    age: 56
+    creatureType: "HOBBIT"
+    defenseLevel: 16.5
+    attackLevel: 28.1
+    coordinates:
+      x: 1814
+      y: 816.5
+    creatureLocation:
+      name: "Bree"
+      area: 2000
+      population: 500
+      governor: "HUMAN"
+      capital: false
+      populationDensity: 250
+
+  - name: "ORC_10_0019"
+    age: 58
+    creatureType: "GOLLUM"
+    defenseLevel: 14.2
+    attackLevel: 39.1
+    coordinates:
+      x: 960
+      y: -379.8
+    creatureLocation:
+      name: "Rivendell"
+      area: 3000
+      population: 500
+      governor: "ELF"
+      capital: false
+      populationDensity: 166
+
+  - name: "HUMAN_10_0020"
+    age: 114
+    creatureType: "HUMAN"
+    defenseLevel: 43.3
+    attackLevel: 18.7
+    coordinates:
+      x: 189
+      y: 807.0
+    creatureLocation:
+      name: "Shire"
+      area: 5000
+      population: 1000
+      governor: "HOBBIT"
+      capital: true
+      populationDensity: 200
+
+  - name: "GOLLUM_10_0021"
+    age: 112
+    creatureType: "GOLLUM"
+    defenseLevel: 25.6
+    attackLevel: 27.0
+    coordinates:
+      x: -242
+      y: 30.6
+    creatureLocation:
+      name: "Mordor"
+      area: 150000
+      population: 50000
+      governor: "GOLLUM"
+      capital: true
+      populationDensity: 333
+
+  - name: "HUMAN_10_0022"
+    age: 110
+    creatureType: "HUMAN"
+    defenseLevel: 13.2
+    attackLevel: 16.6
+    coordinates:
+      x: -15
+      y: 516.9
+    creatureLocation:
+      name: "Mirkwood"
+      area: 10000
+      population: 2000
+      governor: "ELF"
+      capital: true
+      populationDensity: 200
+
+  - name: "ORC_10_0023"
+    age: 148
+    creatureType: "GOLLUM"
+    defenseLevel: 15.8
+    attackLevel: 38.7
+    coordinates:
+      x: 1398
+      y: 622.2
+    creatureLocation:
+      name: "Fangorn"
+      area: 25000
+      population: 100
+      governor: "ELF"
+      capital: false
+      populationDensity: 4
+    ring:
+      name: "Warrior Ring"
+      power: 737
+      weight: 0.42
+
+  - name: "HOBBIT_10_0024"
+    age: 75
+    creatureType: "HOBBIT"
+    defenseLevel: 29.5
+    attackLevel: 36.5
+    coordinates:
+      x: 1499
+      y: -312.0
+    creatureLocation:
+      name: "Lothlorien"
+      area: 8000
+      population: 1500
+      governor: "ELF"
+      capital: true
+      populationDensity: 187
+    ring:
+      name: "Light Ring"
+      power: 419
+      weight: 0.19
+
+  - name: "HUMAN_10_0025"
+    age: 133
+    creatureType: "HUMAN"
+    defenseLevel: 38.0
+    attackLevel: 42.9
+    coordinates:
+      x: 1227
+      y: 1419.7
+    creatureLocation:
+      name: "Fangorn"
+      area: 25000
+      population: 100
+      governor: "ELF"
+      capital: false
+      populationDensity: 4
+
+  - name: "HOBBIT_10_0026"
+    age: 45
+    creatureType: "HOBBIT"
+    defenseLevel: 42.7
+    attackLevel: 8.7
+    coordinates:
+      x: 28
+      y: 39.6
+    creatureLocation:
+      name: "Shire"
+      area: 5000
+      population: 1000
+      governor: "HOBBIT"
+      capital: true
+      populationDensity: 200
+
+  - name: "ORC_10_0027"
+    age: 145
+    creatureType: "GOLLUM"
+    defenseLevel: 25.4
+    attackLevel: 38.0
+    coordinates:
+      x: 1983
+      y: 1580.1
+    creatureLocation:
+      name: "Dale"
+      area: 8000
+      population: 5000
+      governor: "HUMAN"
+      capital: false
+      populationDensity: 625
+    ring:
+      name: "Ancient Ring"
+      power: 606
+      weight: 0.56
+
+  - name: "ORC_10_0028"
+    age: 147
+    creatureType: "GOLLUM"
+    defenseLevel: 5.8
+    attackLevel: 8.8
+    coordinates:
+      x: 234
+      y: 903.5
+    creatureLocation:
+      name: "Shire"
+      area: 5000
+      population: 1000
+      governor: "HOBBIT"
+      capital: true
+      populationDensity: 200
+
+  - name: "ELF_10_0029"
+    age: 105
+    creatureType: "ELF"
+    defenseLevel: 38.8
+    attackLevel: 29.2
+    coordinates:
+      x: 571
+      y: 606.4
+    creatureLocation:
+      name: "Rohan"
+      area: 30000
+      population: 20000
+      governor: "HUMAN"
+      capital: true
+      populationDensity: 666
+
+  - name: "HUMAN_10_0030"
+    age: 45
+    creatureType: "HUMAN"
+    defenseLevel: 22.6
+    attackLevel: 32.5
+    coordinates:
+      x: 1747
+      y: 1426.7
+    creatureLocation:
+      name: "Gondor"
+      area: 50000
+      population: 100000
+      governor: "HUMAN"
+      capital: true
+      populationDensity: 2000
+    ring:
+      name: "One Ring"
+      power: 664
+      weight: 1.48
+
+  - name: "ELF_10_0031"
+    age: 4193
+    creatureType: "ELF"
+    defenseLevel: 12.5
+    attackLevel: 40.8
+    coordinates:
+      x: 1286
+      y: 1716.5
+    creatureLocation:
+      name: "Helm's Deep"
+      area: 5000
+      population: 3000
+      governor: "HUMAN"
+      capital: false
+      populationDensity: 600
+
+  - name: "WIZARD_10_0032"
+    age: 56
+    creatureType: "HUMAN"
+    defenseLevel: 49.0
+    attackLevel: 43.6
+    coordinates:
+      x: 1554
+      y: -490.1
+    creatureLocation:
+      name: "Bree"
+      area: 2000
+      population: 500
+      governor: "HUMAN"
+      capital: false
+      populationDensity: 250
+
+  - name: "GOLLUM_10_0033"
+    age: 94
+    creatureType: "GOLLUM"
+    defenseLevel: 47.9
+    attackLevel: 37.2
+    coordinates:
+      x: 517
+      y: 10.4
+    creatureLocation:
+      name: "Mordor"
+      area: 150000
+      population: 50000
+      governor: "GOLLUM"
+      capital: true
+      populationDensity: 333
+    ring:
+      name: "Light Ring"
+      power: 410
+      weight: 0.69
+
+  - name: "DWARF_10_0034"
+    age: 102
+    creatureType: "HUMAN"
+    defenseLevel: 6.5
+    attackLevel: 32.9
+    coordinates:
+      x: 1413
+      y: 1159.5
+    creatureLocation:
+      name: "Gondor"
+      area: 50000
+      population: 100000
+      governor: "HUMAN"
+      capital: true
+      populationDensity: 2000
+
+  - name: "ELF_10_0035"
+    age: 5770
+    creatureType: "ELF"
+    defenseLevel: 33.4
+    attackLevel: 32.0
+    coordinates:
+      x: -242
+      y: 640.8
+    creatureLocation:
+      name: "Shire"
+      area: 5000
+      population: 1000
+      governor: "HOBBIT"
+      capital: true
+      populationDensity: 200
+
+  - name: "HUMAN_10_0036"
+    age: 76
+    creatureType: "HUMAN"
+    defenseLevel: 49.2
+    attackLevel: 44.5
+    coordinates:
+      x: 80
+      y: 1040.0
+    creatureLocation:
+      name: "Bree"
+      area: 2000
+      population: 500
+      governor: "HUMAN"
+      capital: false
+      populationDensity: 250
+    ring:
+      name: "Mystic Ring"
+      power: 886
+      weight: 1.0
+
+  - name: "HUMAN_10_0037"
+    age: 47
+    creatureType: "HUMAN"
+    defenseLevel: 37.8
+    attackLevel: 42.4
+    coordinates:
+      x: 632
+      y: -247.7
+    creatureLocation:
+      name: "Dale"
+      area: 8000
+      population: 5000
+      governor: "HUMAN"
+      capital: false
+      populationDensity: 625
+
+  - name: "ELF_10_0038"
+    age: 4708
+    creatureType: "ELF"
+    defenseLevel: 15.6
+    attackLevel: 17.6
+    coordinates:
+      x: 1386
+      y: 851.0
+    creatureLocation:
+      name: "Lothlorien"
+      area: 8000
+      population: 1500
+      governor: "ELF"
+      capital: true
+      populationDensity: 187
+
+  - name: "HUMAN_10_0039"
+    age: 32
+    creatureType: "HUMAN"
+    defenseLevel: 44.2
+    attackLevel: 6.6
+    coordinates:
+      x: -317
+      y: 1940.4
+    creatureLocation:
+      name: "Helm's Deep"
+      area: 5000
+      population: 3000
+      governor: "HUMAN"
+      capital: false
+      populationDensity: 600
+
+  - name: "ORC_10_0040"
+    age: 144
+    creatureType: "GOLLUM"
+    defenseLevel: 32.0
+    attackLevel: 22.4
+    coordinates:
+      x: -282
+      y: 605.5
+    creatureLocation:
+      name: "Lothlorien"
+      area: 8000
+      population: 1500
+      governor: "ELF"
+      capital: true
+      populationDensity: 187
+    ring:
+      name: "Narya"
+      power: 625
+      weight: 1.45
+
+  - name: "HUMAN_10_0041"
+    age: 116
+    creatureType: "HUMAN"
+    defenseLevel: 8.7
+    attackLevel: 10.8
+    coordinates:
+      x: 1658
+      y: 849.8
+    creatureLocation:
+      name: "Mordor"
+      area: 150000
+      population: 50000
+      governor: "GOLLUM"
+      capital: true
+      populationDensity: 333
+    ring:
+      name: "One Ring"
+      power: 242
+      weight: 1.67
+
+  - name: "WIZARD_10_0042"
+    age: 133
+    creatureType: "HUMAN"
+    defenseLevel: 23.1
+    attackLevel: 22.9
+    coordinates:
+      x: 1084
+      y: 1768.0
+    creatureLocation:
+      name: "Misty Mountains"
+      area: 20000
+      population: 50
+      governor: "GOLLUM"
+      capital: false
+      populationDensity: 2
+
+  - name: "HOBBIT_10_0043"
+    age: 83
+    creatureType: "HOBBIT"
+    defenseLevel: 5.2
+    attackLevel: 16.5
+    coordinates:
+      x: 1462
+      y: 360.3
+    creatureLocation:
+      name: "Minas Tirith"
+      area: 40000
+      population: 50000
+      governor: "HUMAN"
+      capital: true
+      populationDensity: 1250
+
+  - name: "WIZARD_10_0044"
+    age: 117
+    creatureType: "HUMAN"
+    defenseLevel: 32.2
+    attackLevel: 36.2
+    coordinates:
+      x: 1406
+      y: 1871.0
+    creatureLocation:
+      name: "Gondor"
+      area: 50000
+      population: 100000
+      governor: "HUMAN"
+      capital: true
+      populationDensity: 2000
+
+  - name: "GOLLUM_10_0045"
+    age: 130
+    creatureType: "GOLLUM"
+    defenseLevel: 26.6
+    attackLevel: 44.4
+    coordinates:
+      x: 456
+      y: -236.0
+    creatureLocation:
+      name: "Helm's Deep"
+      area: 5000
+      population: 3000
+      governor: "HUMAN"
+      capital: false
+      populationDensity: 600
+    ring:
+      name: "Guardian Ring"
+      power: 653
+      weight: 1.24
+
+  - name: "DWARF_10_0046"
+    age: 49
+    creatureType: "HUMAN"
+    defenseLevel: 33.1
+    attackLevel: 23.6
+    coordinates:
+      x: 1899
+      y: 1051.0
+    creatureLocation:
+      name: "Mirkwood"
+      area: 10000
+      population: 2000
+      governor: "ELF"
+      capital: true
+      populationDensity: 200
+
+  - name: "WIZARD_10_0047"
+    age: 30
+    creatureType: "HUMAN"
+    defenseLevel: 44.1
+    attackLevel: 27.8
+    coordinates:
+      x: 1121
+      y: 663.2
+    creatureLocation:
+      name: "Bree"
+      area: 2000
+      population: 500
+      governor: "HUMAN"
+      capital: false
+      populationDensity: 250
+
+  - name: "GOLLUM_10_0048"
+    age: 64
+    creatureType: "GOLLUM"
+    defenseLevel: 13.8
+    attackLevel: 8.9
+    coordinates:
+      x: 1176
+      y: -464.9
+    creatureLocation:
+      name: "Fangorn"
+      area: 25000
+      population: 100
+      governor: "ELF"
+      capital: false
+      populationDensity: 4
+
+  - name: "HUMAN_10_0049"
+    age: 142
+    creatureType: "HUMAN"
+    defenseLevel: 45.1
+    attackLevel: 20.9
+    coordinates:
+      x: 725
+      y: 550.0
+    creatureLocation:
+      name: "Rohan"
+      area: 30000
+      population: 20000
+      governor: "HUMAN"
+      capital: true
+      populationDensity: 666
+    ring:
+      name: "Ring of Power"
+      power: 661
+      weight: 0.69
+
+  - name: "ORC_10_0050"
+    age: 40
+    creatureType: "GOLLUM"
+    defenseLevel: 43.1
+    attackLevel: 6.0
+    coordinates:
+      x: 1784
+      y: 981.8
+    creatureLocation:
+      name: "Erebor"
+      area: 15000
+      population: 10000
+      governor: "HUMAN"
+      capital: true
+      populationDensity: 666
+    ring:
+      name: "Ring of Power"
+      power: 155
+      weight: 1.16
+
+  - name: "HUMAN_10_0051"
+    age: 146
+    creatureType: "HUMAN"
+    defenseLevel: 31.1
+    attackLevel: 35.9
+    coordinates:
+      x: 99
+      y: 112.6
+    creatureLocation:
+      name: "Mirkwood"
+      area: 10000
+      population: 2000
+      governor: "ELF"
+      capital: true
+      populationDensity: 200
+    ring:
+      name: "Vilya"
+      power: 146
+      weight: 1.82
+
+  - name: "ORC_10_0052"
+    age: 68
+    creatureType: "GOLLUM"
+    defenseLevel: 41.4
+    attackLevel: 21.5
+    coordinates:
+      x: 1021
+      y: 1144.2
+    creatureLocation:
+      name: "Erebor"
+      area: 15000
+      population: 10000
+      governor: "HUMAN"
+      capital: true
+      populationDensity: 666
+    ring:
+      name: "Guardian Ring"
+      power: 202
+      weight: 0.17
+
+  - name: "WIZARD_10_0053"
+    age: 89
+    creatureType: "HUMAN"
+    defenseLevel: 5.1
+    attackLevel: 19.4
+    coordinates:
+      x: 1934
+      y: 309.8
+    creatureLocation:
+      name: "Isengard"
+      area: 10000
+      population: 5000
+      governor: "GOLLUM"
+      capital: false
+      populationDensity: 500
+
+  - name: "HOBBIT_10_0054"
+    age: 143
+    creatureType: "HOBBIT"
+    defenseLevel: 5.3
+    attackLevel: 43.2
+    coordinates:
+      x: 1673
+      y: 383.8
+    creatureLocation:
+      name: "Rohan"
+      area: 30000
+      population: 20000
+      governor: "HUMAN"
+      capital: true
+      populationDensity: 666
+
+  - name: "HUMAN_10_0055"
+    age: 79
+    creatureType: "HUMAN"
+    defenseLevel: 20.4
+    attackLevel: 31.3
+    coordinates:
+      x: 126
+      y: -346.1
+    creatureLocation:
+      name: "Helm's Deep"
+      area: 5000
+      population: 3000
+      governor: "HUMAN"
+      capital: false
+      populationDensity: 600
+
+  - name: "WIZARD_10_0056"
+    age: 69
+    creatureType: "HUMAN"
+    defenseLevel: 17.8
+    attackLevel: 29.3
+    coordinates:
+      x: 734
+      y: 1314.4
+    creatureLocation:
+      name: "Rivendell"
+      area: 3000
+      population: 500
+      governor: "ELF"
+      capital: false
+      populationDensity: 166
+
+  - name: "ELF_10_0057"
+    age: 7850
+    creatureType: "ELF"
+    defenseLevel: 7.2
+    attackLevel: 17.6
+    coordinates:
+      x: -494
+      y: 282.3
+    creatureLocation:
+      name: "Helm's Deep"
+      area: 5000
+      population: 3000
+      governor: "HUMAN"
+      capital: false
+      populationDensity: 600
+
+  - name: "WIZARD_10_0058"
+    age: 108
+    creatureType: "HUMAN"
+    defenseLevel: 31.6
+    attackLevel: 7.5
+    coordinates:
+      x: -487
+      y: 1661.3
+    creatureLocation:
+      name: "Bree"
+      area: 2000
+      population: 500
+      governor: "HUMAN"
+      capital: false
+      populationDensity: 250
+    ring:
+      name: "Elven Ring of Air"
+      power: 310
+      weight: 1.06
+
+  - name: "HUMAN_10_0059"
+    age: 38
+    creatureType: "HUMAN"
+    defenseLevel: 21.5
+    attackLevel: 13.1
+    coordinates:
+      x: 425
+      y: 887.6
+    creatureLocation:
+      name: "Rivendell"
+      area: 3000
+      population: 500
+      governor: "ELF"
+      capital: false
+      populationDensity: 166
+
+  - name: "ELF_10_0060"
+    age: 4607
+    creatureType: "ELF"
+    defenseLevel: 28.8
+    attackLevel: 42.6
+    coordinates:
+      x: 918
+      y: 1615.9
+    creatureLocation:
+      name: "Fangorn"
+      area: 25000
+      population: 100
+      governor: "ELF"
+      capital: false
+      populationDensity: 4
+
+  - name: "HOBBIT_10_0061"
+    age: 98
+    creatureType: "HOBBIT"
+    defenseLevel: 44.2
+    attackLevel: 30.5
+    coordinates:
+      x: 316
+      y: 683.8
+    creatureLocation:
+      name: "Mirkwood"
+      area: 10000
+      population: 2000
+      governor: "ELF"
+      capital: true
+      populationDensity: 200
+    ring:
+      name: "Narya"
+      power: 362
+      weight: 1.02
+
+  - name: "DWARF_10_0062"
+    age: 136
+    creatureType: "HUMAN"
+    defenseLevel: 40.9
+    attackLevel: 35.5
+    coordinates:
+      x: 1064
+      y: 1756.2
+    creatureLocation:
+      name: "Rivendell"
+      area: 3000
+      population: 500
+      governor: "ELF"
+      capital: false
+      populationDensity: 166
+
+  - name: "HOBBIT_10_0063"
+    age: 80
+    creatureType: "HOBBIT"
+    defenseLevel: 21.2
+    attackLevel: 13.6
+    coordinates:
+      x: 1358
+      y: -85.1
+    creatureLocation:
+      name: "Mirkwood"
+      area: 10000
+      population: 2000
+      governor: "ELF"
+      capital: true
+      populationDensity: 200
+    ring:
+      name: "Vilya"
+      power: 740
+      weight: 0.68
+
+  - name: "ELF_10_0064"
+    age: 5553
+    creatureType: "ELF"
+    defenseLevel: 36.3
+    attackLevel: 22.1
+    coordinates:
+      x: 1547
+      y: -217.4
+    creatureLocation:
+      name: "Fangorn"
+      area: 25000
+      population: 100
+      governor: "ELF"
+      capital: false
+      populationDensity: 4
+
+  - name: "HUMAN_10_0065"
+    age: 50
+    creatureType: "HUMAN"
+    defenseLevel: 44.9
+    attackLevel: 39.3
+    coordinates:
+      x: -210
+      y: 791.1
+    creatureLocation:
+      name: "Mirkwood"
+      area: 10000
+      population: 2000
+      governor: "ELF"
+      capital: true
+      populationDensity: 200
+
+  - name: "ORC_10_0066"
+    age: 131
+    creatureType: "GOLLUM"
+    defenseLevel: 8.0
+    attackLevel: 44.1
+    coordinates:
+      x: 534
+      y: 1271.7
+    creatureLocation:
+      name: "Shire"
+      area: 5000
+      population: 1000
+      governor: "HOBBIT"
+      capital: true
+      populationDensity: 200
+
+  - name: "WIZARD_10_0067"
+    age: 102
+    creatureType: "HUMAN"
+    defenseLevel: 24.4
+    attackLevel: 36.6
+    coordinates:
+      x: 1435
+      y: 389.7
+    creatureLocation:
+      name: "Fangorn"
+      area: 25000
+      population: 100
+      governor: "ELF"
+      capital: false
+      populationDensity: 4
+    ring:
+      name: "Light Ring"
+      power: 219
+      weight: 0.21
+
+  - name: "GOLLUM_10_0068"
+    age: 61
+    creatureType: "GOLLUM"
+    defenseLevel: 6.1
+    attackLevel: 23.6
+    coordinates:
+      x: 376
+      y: -156.1
+    creatureLocation:
+      name: "Erebor"
+      area: 15000
+      population: 10000
+      governor: "HUMAN"
+      capital: true
+      populationDensity: 666
+    ring:
+      name: "Elven Ring of Air"
+      power: 231
+      weight: 0.89
+
+  - name: "HUMAN_10_0069"
+    age: 39
+    creatureType: "HUMAN"
+    defenseLevel: 27.1
+    attackLevel: 46.5
+    coordinates:
+      x: 1392
+      y: -402.0
+    creatureLocation:
+      name: "Mirkwood"
+      area: 10000
+      population: 2000
+      governor: "ELF"
+      capital: true
+      populationDensity: 200
+
+  - name: "HUMAN_10_0070"
+    age: 26
+    creatureType: "HUMAN"
+    defenseLevel: 22.9
+    attackLevel: 38.5
+    coordinates:
+      x: 1030
+      y: 1248.5
+    creatureLocation:
+      name: "Gondor"
+      area: 50000
+      population: 100000
+      governor: "HUMAN"
+      capital: true
+      populationDensity: 2000
+    ring:
+      name: "Ancient Ring"
+      power: 784
+      weight: 1.78
+
+  - name: "ORC_10_0071"
+    age: 94
+    creatureType: "GOLLUM"
+    defenseLevel: 7.8
+    attackLevel: 32.0
+    coordinates:
+      x: 156
+      y: 966.0
+    creatureLocation:
+      name: "Misty Mountains"
+      area: 20000
+      population: 50
+      governor: "GOLLUM"
+      capital: false
+      populationDensity: 2
+    ring:
+      name: "Narya"
+      power: 871
+      weight: 0.3
+
+  - name: "ORC_10_0072"
+    age: 137
+    creatureType: "GOLLUM"
+    defenseLevel: 5.2
+    attackLevel: 45.0
+    coordinates:
+      x: 1015
+      y: 723.7
+    creatureLocation:
+      name: "Isengard"
+      area: 10000
+      population: 5000
+      governor: "GOLLUM"
+      capital: false
+      populationDensity: 500
+    ring:
+      name: "Narya"
+      power: 164
+      weight: 1.82
+
+  - name: "GOLLUM_10_0073"
+    age: 102
+    creatureType: "GOLLUM"
+    defenseLevel: 25.7
+    attackLevel: 29.9
+    coordinates:
+      x: 1173
+      y: 1244.2
+    creatureLocation:
+      name: "Lothlorien"
+      area: 8000
+      population: 1500
+      governor: "ELF"
+      capital: true
+      populationDensity: 187
+
+  - name: "ELF_10_0074"
+    age: 4770
+    creatureType: "ELF"
+    defenseLevel: 36.9
+    attackLevel: 38.5
+    coordinates:
+      x: 1117
+      y: 858.7
+    creatureLocation:
+      name: "Gondor"
+      area: 50000
+      population: 100000
+      governor: "HUMAN"
+      capital: true
+      populationDensity: 2000
+
+  - name: "ORC_10_0075"
+    age: 87
+    creatureType: "GOLLUM"
+    defenseLevel: 38.0
+    attackLevel: 13.8
+    coordinates:
+      x: 1743
+      y: -449.0
+    creatureLocation:
+      name: "Minas Tirith"
+      area: 40000
+      population: 50000
+      governor: "HUMAN"
+      capital: true
+      populationDensity: 1250
+
+  - name: "HOBBIT_10_0076"
+    age: 70
+    creatureType: "HOBBIT"
+    defenseLevel: 24.0
+    attackLevel: 22.2
+    coordinates:
+      x: 115
+      y: 198.0
+    creatureLocation:
+      name: "Mirkwood"
+      area: 10000
+      population: 2000
+      governor: "ELF"
+      capital: true
+      populationDensity: 200
+
+  - name: "DWARF_10_0077"
+    age: 42
+    creatureType: "HUMAN"
+    defenseLevel: 25.1
+    attackLevel: 6.4
+    coordinates:
+      x: 1759
+      y: 149.7
+    creatureLocation:
+      name: "Isengard"
+      area: 10000
+      population: 5000
+      governor: "GOLLUM"
+      capital: false
+      populationDensity: 500
+
+  - name: "HOBBIT_10_0078"
+    age: 75
+    creatureType: "HOBBIT"
+    defenseLevel: 48.8
+    attackLevel: 9.7
+    coordinates:
+      x: 1699
+      y: 1441.5
+    creatureLocation:
+      name: "Rivendell"
+      area: 3000
+      population: 500
+      governor: "ELF"
+      capital: false
+      populationDensity: 166
+
+  - name: "ORC_10_0079"
+    age: 137
+    creatureType: "GOLLUM"
+    defenseLevel: 27.3
+    attackLevel: 43.7
+    coordinates:
+      x: 1071
+      y: 1415.3
+    creatureLocation:
+      name: "Rohan"
+      area: 30000
+      population: 20000
+      governor: "HUMAN"
+      capital: true
+      populationDensity: 666
+    ring:
+      name: "Guardian Ring"
+      power: 227
+      weight: 1.38
+
+  - name: "DWARF_10_0080"
+    age: 106
+    creatureType: "HUMAN"
+    defenseLevel: 10.4
+    attackLevel: 15.5
+    coordinates:
+      x: 791
+      y: 1421.5
+    creatureLocation:
+      name: "Mordor"
+      area: 150000
+      population: 50000
+      governor: "GOLLUM"
+      capital: true
+      populationDensity: 333
+
+  - name: "ELF_10_0081"
+    age: 3885
+    creatureType: "ELF"
+    defenseLevel: 14.1
+    attackLevel: 36.7
+    coordinates:
+      x: 889
+      y: 1363.7
+    creatureLocation:
+      name: "Bree"
+      area: 2000
+      population: 500
+      governor: "HUMAN"
+      capital: false
+      populationDensity: 250
+
+  - name: "DWARF_10_0082"
+    age: 72
+    creatureType: "HUMAN"
+    defenseLevel: 41.5
+    attackLevel: 18.6
+    coordinates:
+      x: -351
+      y: 411.9
+    creatureLocation:
+      name: "Minas Tirith"
+      area: 40000
+      population: 50000
+      governor: "HUMAN"
+      capital: true
+      populationDensity: 1250
+    ring:
+      name: "Narya"
+      power: 110
+      weight: 1.33
+
+  - name: "HOBBIT_10_0083"
+    age: 142
+    creatureType: "HOBBIT"
+    defenseLevel: 47.7
+    attackLevel: 27.3
+    coordinates:
+      x: 1040
+      y: -368.0
+    creatureLocation:
+      name: "Shire"
+      area: 5000
+      population: 1000
+      governor: "HOBBIT"
+      capital: true
+      populationDensity: 200
+
+  - name: "HOBBIT_10_0084"
+    age: 140
+    creatureType: "HOBBIT"
+    defenseLevel: 41.7
+    attackLevel: 45.8
+    coordinates:
+      x: -257
+      y: 888.6
+    creatureLocation:
+      name: "Helm's Deep"
+      area: 5000
+      population: 3000
+      governor: "HUMAN"
+      capital: false
+      populationDensity: 600
+    ring:
+      name: "Narya"
+      power: 986
+      weight: 1.88
+
+  - name: "ORC_10_0085"
+    age: 42
+    creatureType: "GOLLUM"
+    defenseLevel: 41.1
+    attackLevel: 9.7
+    coordinates:
+      x: 199
+      y: 586.6
+    creatureLocation:
+      name: "Minas Tirith"
+      area: 40000
+      population: 50000
+      governor: "HUMAN"
+      capital: true
+      populationDensity: 1250
+    ring:
+      name: "Light Ring"
+      power: 187
+      weight: 0.81
+
+  - name: "ELF_10_0086"
+    age: 2657
+    creatureType: "ELF"
+    defenseLevel: 23.8
+    attackLevel: 10.2
+    coordinates:
+      x: -362
+      y: 248.1
+    creatureLocation:
+      name: "Erebor"
+      area: 15000
+      population: 10000
+      governor: "HUMAN"
+      capital: true
+      populationDensity: 666
+
+  - name: "ORC_10_0087"
+    age: 123
+    creatureType: "GOLLUM"
+    defenseLevel: 29.5
+    attackLevel: 39.4
+    coordinates:
+      x: -222
+      y: 1797.1
+    creatureLocation:
+      name: "Helm's Deep"
+      area: 5000
+      population: 3000
+      governor: "HUMAN"
+      capital: false
+      populationDensity: 600
+    ring:
+      name: "Guardian Ring"
+      power: 986
+      weight: 1.6
+
+  - name: "ELF_10_0088"
+    age: 7564
+    creatureType: "ELF"
+    defenseLevel: 35.6
+    attackLevel: 34.8
+    coordinates:
+      x: 573
+      y: 1116.8
+    creatureLocation:
+      name: "Lothlorien"
+      area: 8000
+      population: 1500
+      governor: "ELF"
+      capital: true
+      populationDensity: 187
+    ring:
+      name: "Guardian Ring"
+      power: 343
+      weight: 1.03
+
+  - name: "DWARF_10_0089"
+    age: 24
+    creatureType: "HUMAN"
+    defenseLevel: 11.5
+    attackLevel: 16.9
+    coordinates:
+      x: 124
+      y: -296.1
+    creatureLocation:
+      name: "Lothlorien"
+      area: 8000
+      population: 1500
+      governor: "ELF"
+      capital: true
+      populationDensity: 187
+
+  - name: "HOBBIT_10_0090"
+    age: 123
+    creatureType: "HOBBIT"
+    defenseLevel: 38.7
+    attackLevel: 16.0
+    coordinates:
+      x: 1613
+      y: 1401.4
+    creatureLocation:
+      name: "Rohan"
+      area: 30000
+      population: 20000
+      governor: "HUMAN"
+      capital: true
+      populationDensity: 666
+    ring:
+      name: "Guardian Ring"
+      power: 548
+      weight: 1.75
+
+  - name: "HOBBIT_10_0091"
+    age: 59
+    creatureType: "HOBBIT"
+    defenseLevel: 43.5
+    attackLevel: 36.5
+    coordinates:
+      x: 1603
+      y: 1576.1
+    creatureLocation:
+      name: "Bree"
+      area: 2000
+      population: 500
+      governor: "HUMAN"
+      capital: false
+      populationDensity: 250
+
+  - name: "HUMAN_10_0092"
+    age: 133
+    creatureType: "HUMAN"
+    defenseLevel: 22.2
+    attackLevel: 34.3
+    coordinates:
+      x: 38
+      y: 1020.8
+    creatureLocation:
+      name: "Dale"
+      area: 8000
+      population: 5000
+      governor: "HUMAN"
+      capital: false
+      populationDensity: 625
+    ring:
+      name: "Vilya"
+      power: 690
+      weight: 0.89
+
+  - name: "ORC_10_0093"
+    age: 130
+    creatureType: "GOLLUM"
+    defenseLevel: 22.2
+    attackLevel: 11.8
+    coordinates:
+      x: 1040
+      y: 1344.2
+    creatureLocation:
+      name: "Lothlorien"
+      area: 8000
+      population: 1500
+      governor: "ELF"
+      capital: true
+      populationDensity: 187
+
+  - name: "HOBBIT_10_0094"
+    age: 26
+    creatureType: "HOBBIT"
+    defenseLevel: 21.0
+    attackLevel: 36.0
+    coordinates:
+      x: 993
+      y: 789.8
+    creatureLocation:
+      name: "Rohan"
+      area: 30000
+      population: 20000
+      governor: "HUMAN"
+      capital: true
+      populationDensity: 666
+
+  - name: "ELF_10_0095"
+    age: 2947
+    creatureType: "ELF"
+    defenseLevel: 31.6
+    attackLevel: 35.7
+    coordinates:
+      x: -159
+      y: 650.5
+    creatureLocation:
+      name: "Fangorn"
+      area: 25000
+      population: 100
+      governor: "ELF"
+      capital: false
+      populationDensity: 4
+
+  - name: "GOLLUM_10_0096"
+    age: 101
+    creatureType: "GOLLUM"
+    defenseLevel: 31.1
+    attackLevel: 47.0
+    coordinates:
+      x: 219
+      y: 1545.3
+    creatureLocation:
+      name: "Shire"
+      area: 5000
+      population: 1000
+      governor: "HOBBIT"
+      capital: true
+      populationDensity: 200
+    ring:
+      name: "Ancient Ring"
+      power: 619
+      weight: 0.67
+
+  - name: "ORC_10_0097"
+    age: 58
+    creatureType: "GOLLUM"
+    defenseLevel: 48.0
+    attackLevel: 20.5
+    coordinates:
+      x: 1709
+      y: -93.0
+    creatureLocation:
+      name: "Misty Mountains"
+      area: 20000
+      population: 50
+      governor: "GOLLUM"
+      capital: false
+      populationDensity: 2
+
+  - name: "ELF_10_0098"
+    age: 1699
+    creatureType: "ELF"
+    defenseLevel: 17.8
+    attackLevel: 29.8
+    coordinates:
+      x: 1197
+      y: -320.1
+    creatureLocation:
+      name: "Helm's Deep"
+      area: 5000
+      population: 3000
+      governor: "HUMAN"
+      capital: false
+      populationDensity: 600
+
+  - name: "ORC_10_0099"
+    age: 68
+    creatureType: "GOLLUM"
+    defenseLevel: 16.4
+    attackLevel: 48.4
+    coordinates:
+      x: -387
+      y: 898.3
+    creatureLocation:
+      name: "Misty Mountains"
+      area: 20000
+      population: 50
+      governor: "GOLLUM"
+      capital: false
+      populationDensity: 2
+
+  - name: "GOLLUM_10_0100"
+    age: 110
+    creatureType: "GOLLUM"
+    defenseLevel: 42.5
+    attackLevel: 12.3
+    coordinates:
+      x: -214
+      y: -229.8
+    creatureLocation:
+      name: "Fangorn"
+      area: 25000
+      population: 100
+      governor: "ELF"
+      capital: false
+      populationDensity: 4
+    ring:
+      name: "Warrior Ring"
+      power: 727
+      weight: 1.64
+
+  - name: "ELF_10_0101"
+    age: 4778
+    creatureType: "ELF"
+    defenseLevel: 43.0
+    attackLevel: 22.8
+    coordinates:
+      x: 1438
+      y: -399.6
+    creatureLocation:
+      name: "Misty Mountains"
+      area: 20000
+      population: 50
+      governor: "GOLLUM"
+      capital: false
+      populationDensity: 2
+    ring:
+      name: "Nenya"
+      power: 547
+      weight: 0.92
+
+  - name: "HUMAN_10_0102"
+    age: 65
+    creatureType: "HUMAN"
+    defenseLevel: 41.1
+    attackLevel: 5.4
+    coordinates:
+      x: -335
+      y: 1888.1
+    creatureLocation:
+      name: "Rohan"
+      area: 30000
+      population: 20000
+      governor: "HUMAN"
+      capital: true
+      populationDensity: 666
+
+  - name: "GOLLUM_10_0103"
+    age: 73
+    creatureType: "GOLLUM"
+    defenseLevel: 48.7
+    attackLevel: 46.1
+    coordinates:
+      x: 510
+      y: 1997.4
+    creatureLocation:
+      name: "Minas Tirith"
+      area: 40000
+      population: 50000
+      governor: "HUMAN"
+      capital: true
+      populationDensity: 1250
+    ring:
+      name: "Warrior Ring"
+      power: 971
+      weight: 1.93
+
+  - name: "HOBBIT_10_0104"
+    age: 97
+    creatureType: "HOBBIT"
+    defenseLevel: 13.9
+    attackLevel: 38.8
+    coordinates:
+      x: 637
+      y: 1360.5
+    creatureLocation:
+      name: "Lothlorien"
+      area: 8000
+      population: 1500
+      governor: "ELF"
+      capital: true
+      populationDensity: 187
+
+  - name: "HOBBIT_10_0105"
+    age: 85
+    creatureType: "HOBBIT"
+    defenseLevel: 42.2
+    attackLevel: 29.0
+    coordinates:
+      x: 150
+      y: 1609.2
+    creatureLocation:
+      name: "Shire"
+      area: 5000
+      population: 1000
+      governor: "HOBBIT"
+      capital: true
+      populationDensity: 200
+    ring:
+      name: "One Ring"
+      power: 854
+      weight: 0.29
+

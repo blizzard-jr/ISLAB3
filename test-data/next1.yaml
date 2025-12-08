@@ -1,0 +1,52 @@
+creatures:
+  - name: "Frodo Baggins"
+    age: 50
+    creatureType: "HOBBIT"
+    defenseLevel: 15.0
+    attackLevel: 8.0
+    coordinates:
+      x: 100
+      y: 200.5
+    creatureLocation:
+      name: "Shire"
+      area: 5000
+      population: 1000
+      governor: "HOBBIT"
+      capital: true
+      populationDensity: 200
+    ring:
+      name: "One Ring"
+      power: 1000
+      weight: 0.5
+
+  - name: "Samwise Gamgee"
+    age: 38
+    creatureType: "HOBBIT"
+    defenseLevel: 12.0
+    attackLevel: 10.0
+    coordinates:
+      x: 105
+      y: 195.3
+    creatureLocation:
+      name: "Shire"
+      area: 5000
+      population: 1000
+      governor: "HOBBIT"
+      capital: true
+      populationDensity: 200
+
+  - name: "Bilbo Baggins"
+    age: 111
+    creatureType: "HOBBIT"
+    defenseLevel: 10.0
+    attackLevel: 5.0
+    coordinates:
+      x: 98
+      y: 202.1
+    creatureLocation:
+      name: "Rivendell"
+      area: 3000
+      population: 500
+      governor: "ELF"
+      capital: false
+      populationDensity: 166

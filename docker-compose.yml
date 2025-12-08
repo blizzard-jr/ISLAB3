@@ -1,3 +1,8 @@
+# Docker Compose для разработки БЕЗ Nginx
+# Для локальной разработки используйте:
+#   1. ./mvnw spring-boot:run (бэкенд на :8080)
+#   2. cd frontend/vueProj && npm run dev (фронтенд на :5173 с прокси)
+
 services:
   backend:
     build:
@@ -7,32 +12,35 @@ services:
     ports:
       - "8080:8080"
     environment:
+      # База данных
       - SPRING_DATASOURCE_URL=jdbc:postgresql://host.docker.internal:5432/postgres
       - SPRING_DATASOURCE_USERNAME=blizzard.jr
       - SPRING_DATASOURCE_PASSWORD=
       - SPRING_JPA_HIBERNATE_DDL_AUTO=create
       - SPRING_JPA_SHOW_SQL=true
       - SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT=org.hibernate.dialect.PostgreSQLDialect
+      # JWT Security
+      - SECURITY_JWT_SECRET_KEY=4eeab38d706831be4b36612ead768ef8182d1dd6f0e14e5dc934652e297fb16a
+      - SECURITY_JWT_ACCESS_TOKEN_EXPIRATION=36000000
+      - SECURITY_JWT_REFRESH_TOKEN_EXPIRATION=252000000
+    volumes:
+      # Том для сохранения лога конфликтов
+      - ./logs:/app/logs
     extra_hosts:
       - "host.docker.internal:host-gateway"
-    networks:
-      - app-network
     restart: unless-stopped
 
+  # Frontend в dev режиме (Vite с proxy на backend)
   frontend:
     build:
       context: .
-      dockerfile: Dockerfile.frontend
+      dockerfile: Dockerfile.frontend.dev
     container_name: is_lab1_frontend
     ports:
-      - "5173:80"
+      - "5173:5173"
+    environment:
+      - VITE_API_URL=http://backend:8080
     depends_on:
       - backend
-    networks:
-      - app-network
     restart: unless-stopped
-
-networks:
-  app-network:
-    driver: bridge
 

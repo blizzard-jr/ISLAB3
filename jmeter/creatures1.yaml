@@ -1,0 +1,19 @@
+creatures:
+  - name: "ImportCreature_1_${__threadNum}"
+    age: 150
+    creatureType: "ELF"
+    defenseLevel: 75.0
+    attackLevel: 60.0
+    coordinates:
+      x: 100
+      y: 200.0
+    creatureLocation:
+      name: "ImportCity_1"
+      area: 5000
+      population: 1000
+      governor: "ELF"
+      capital: true
+      populationDensity: 20
+
+
+

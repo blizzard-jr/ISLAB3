@@ -15,8 +15,9 @@ public class BookCreature {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;//Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
 
+    @Column(unique = true, nullable = false)
     @Check(constraints = "name IS NOT NULL AND TRIM(name) <> ''")
-    private String name; //Поле не может быть null, Строка не может быть пустой
+    private String name; //Поле не может быть null, Строка не может быть пустой, Уникальное
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "coordinates_fk_id", referencedColumnName = "id")

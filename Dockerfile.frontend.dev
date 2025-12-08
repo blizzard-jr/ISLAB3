@@ -1,0 +1,15 @@
+# Dockerfile для фронтенда в dev режиме (без nginx)
+FROM node:18-alpine
+
+WORKDIR /app
+
+COPY frontend/vueProj/package*.json ./
+
+RUN npm ci
+
+COPY frontend/vueProj/ .
+
+EXPOSE 5173
+
+# Vite dev server с proxy на backend
+CMD ["npm", "run", "dev", "--", "--host", "0.0.0.0"]

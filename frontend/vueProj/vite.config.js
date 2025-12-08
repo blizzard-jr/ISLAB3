@@ -19,15 +19,32 @@ export default defineConfig({
     'global': 'globalThis',
   },
   server: {
+    // Используем переменную окружения для Docker, fallback на localhost для локальной разработки
     proxy: {
       '/api': {
-        target: 'http://localhost:8080',
+        target: process.env.VITE_API_URL || 'http://localhost:8080',
         changeOrigin: true,
       },
       '/ws': {
-        target: 'http://localhost:8080',
+        target: process.env.VITE_API_URL || 'http://localhost:8080',
         changeOrigin: true,
         ws: true,
+      },
+      '/login': {
+        target: process.env.VITE_API_URL || 'http://localhost:8080',
+        changeOrigin: true,
+      },
+      '/registration': {
+        target: process.env.VITE_API_URL || 'http://localhost:8080',
+        changeOrigin: true,
+      },
+      '/logout': {
+        target: process.env.VITE_API_URL || 'http://localhost:8080',
+        changeOrigin: true,
+      },
+      '/refresh_token': {
+        target: process.env.VITE_API_URL || 'http://localhost:8080',
+        changeOrigin: true,
       }
     }
   }
