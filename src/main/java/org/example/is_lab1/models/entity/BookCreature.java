@@ -3,6 +3,7 @@ package org.example.is_lab1.models.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Check;
 import org.hibernate.annotations.Generated;
 import org.hibernate.annotations.GenerationTime;
@@ -10,6 +11,11 @@ import org.hibernate.annotations.GenerationTime;
 import java.util.Date;
 
 @Entity
+@Cacheable
+@org.hibernate.annotations.Cache(
+        usage = CacheConcurrencyStrategy.READ_WRITE,
+        region = "entity"
+)
 public class BookCreature {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

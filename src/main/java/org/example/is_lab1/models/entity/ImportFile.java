@@ -1,9 +1,15 @@
 package org.example.is_lab1.models.entity;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 @Entity
 @Table(name = "import_files")
+@Cacheable
+@org.hibernate.annotations.Cache(
+        usage = CacheConcurrencyStrategy.READ_WRITE,
+        region = "entity"
+)
 public class ImportFile {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

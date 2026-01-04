@@ -1,13 +1,16 @@
 package org.example.is_lab1.models.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Data;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Check;
 
 @Entity
+@Cacheable
+@org.hibernate.annotations.Cache(
+        usage = CacheConcurrencyStrategy.READ_WRITE,
+        region = "entity"
+)
 public class Ring {
     @Id
     @GeneratedValue

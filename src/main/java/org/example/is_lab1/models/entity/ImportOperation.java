@@ -4,12 +4,18 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.*;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
 @Table(name = "import_operations")
+@Cacheable
+@org.hibernate.annotations.Cache(
+        usage = CacheConcurrencyStrategy.READ_WRITE,
+        region = "entity"
+)
 public class ImportOperation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
