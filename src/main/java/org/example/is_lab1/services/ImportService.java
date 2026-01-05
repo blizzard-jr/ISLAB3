@@ -30,6 +30,7 @@ import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 record FileContent(String fileName, byte[] content) {}
@@ -43,6 +44,7 @@ public class ImportService {
     private final BookCreatureMapper mapper;
     private final ConflictLogger conflictLogger;
     private final WebSocketNotificationService notificationService;
+    private final MinioStorageService minioStorageService;
     
 
     @Lazy
@@ -54,26 +56,17 @@ public class ImportService {
                          ImportFileRepository importFileRepository,
                          BookCreatureMapper mapper,
                          ConflictLogger conflictLogger,
-                         WebSocketNotificationService notificationService) {
+                         WebSocketNotificationService notificationService, MinioStorageService minioStorageService) {
         this.creatureRepository = creatureRepository;
         this.importOperationRepository = importOperationRepository;
         this.importFileRepository = importFileRepository;
         this.mapper = mapper;
         this.conflictLogger = conflictLogger;
         this.notificationService = notificationService;
+        this.minioStorageService = minioStorageService;
     }
 
     public Long importFromYaml(List<MultipartFile> files, String userId) {
-        List<FileContent> fileContents = files.stream()
-                .map(file -> {
-                    try {
-                        return new FileContent(file.getOriginalFilename(), file.getBytes());
-                    } catch (IOException e) {
-                        throw new RuntimeException("Failed to read file: " + file.getOriginalFilename(), e);
-                    }
-                })
-                .collect(Collectors.toList());
-        
         ImportOperation operation = new ImportOperation();
         operation.setUserId(userId);
         operation.setStatus(ImportStatus.PENDING);
@@ -82,26 +75,26 @@ public class ImportService {
         operation.setAddedCount(0);
         final ImportOperation savedOperation = importOperationRepository.save(operation);
 
-        List<ImportFile> importFiles = fileContents.stream()
+        List<ImportFile> importFiles = files.stream()
                 .map(fc -> {
                     ImportFile importFile = new ImportFile();
                     importFile.setOperation(savedOperation);
-                    importFile.setFileName(fc.fileName());
+                    importFile.setFileName(fc.getOriginalFilename());
+                    log.warn(fc.getName());
                     importFile.setStatus(ImportStatus.PENDING);
                     return importFile;
                 })
                 .collect(Collectors.toList());
         importFiles = importFileRepository.saveAll(importFiles);
         savedOperation.setFiles(importFiles);
-        self.processImportAsync(savedOperation.getId(), fileContents);
-
+        self.processImportAsync(savedOperation.getId(), files);
         return savedOperation.getId();
     }
 
 
-    @Async
+//    @Async
     @Transactional(isolation = org.springframework.transaction.annotation.Isolation.READ_COMMITTED)
-    public void processImportAsync(Long operationId, List<FileContent> fileContents) {
+    public void processImportAsync(Long operationId, List<MultipartFile> files) {
         ImportOperation operation = importOperationRepository.findById(operationId)
                 .orElseThrow(() -> new EntityNotFoundException("Operation not found"));
 
@@ -114,15 +107,19 @@ public class ImportService {
             boolean allSuccess = true;
             StringBuilder errors = new StringBuilder();
 
-            for (FileContent fc : fileContents) {
-                FileImportResult result = processSingleFile(fc, operation);
+            for (MultipartFile fc : files) {
+                String importId = UUID.randomUUID().toString();
+                String key = minioStorageService.uploadTemp(fc, importId);
+                FileImportResult result = processSingleFile(new FileContent(fc.getOriginalFilename(), fc.getBytes()), operation, key);
                 totalAdded += result.addedCount();
                 
-                if (result.status() == ImportStatus.FAILED) {
-                    allSuccess = false;
-                    if (errors.length() > 0) errors.append("; ");
-                    errors.append(result.errorMessage());
-                }
+//                if (result.status() == ImportStatus.FAILED) {
+//                    allSuccess = false;
+//                    if (errors.length() > 0) errors.append("; ");
+//                    errors.append(result.errorMessage());
+//                    minioStorageService.delete(key);
+//                }
+//                minioStorageService.promoteToFinal(key);
             }
 
             operation.setStatus(allSuccess ? ImportStatus.SUCCESS : ImportStatus.FAILED);
@@ -151,7 +148,11 @@ public class ImportService {
     }
 
     @Transactional(isolation = org.springframework.transaction.annotation.Isolation.READ_COMMITTED)
-    protected FileImportResult processSingleFile(FileContent fileContent, ImportOperation operation) {
+    protected FileImportResult processSingleFile(FileContent fileContent, ImportOperation operation, String key) {
+        for(ImportFile el : operation.getFiles()){
+            log.warn(el.getFileName() + "filename from operation");
+            log.warn(fileContent.fileName() + "filename from filecontent");
+        }
         ImportFile importFile = operation.getFiles().stream()
                 .filter(f -> f.getFileName().equals(fileContent.fileName()))
                 .findFirst()
@@ -193,6 +194,8 @@ public class ImportService {
             }
 
             importFile.setStatus(ImportStatus.SUCCESS);
+            String finalKey = minioStorageService.promoteToFinal(key);
+            importFile.setMinioKey(finalKey);
             importFile.setAddedCount(addedCount);
             importFileRepository.save(importFile);
 

@@ -30,6 +30,23 @@ public class ImportFile {
     @Column(columnDefinition = "TEXT")
     private String errorMessage;
 
+    @Column
+    private String minioKey;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     // Конструкторы
     public ImportFile() {
     }
@@ -82,5 +99,13 @@ public class ImportFile {
 
     public void setErrorMessage(String errorMessage) {
         this.errorMessage = errorMessage;
+    }
+
+    public String getMinioKey() {
+        return minioKey;
+    }
+
+    public void setMinioKey(String minioKey) {
+        this.minioKey = minioKey;
     }
 }

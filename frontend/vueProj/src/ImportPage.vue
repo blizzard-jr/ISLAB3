@@ -114,27 +114,46 @@
                 <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700">Добавлено</th>
                 <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700">Дата начала</th>
                 <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700">Дата завершения</th>
+                <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700">Файлы</th>
               </tr>
             </thead>
             <tbody class="divide-y divide-gray-200">
-              <tr v-for="item in history" :key="item.id" class="hover:bg-gray-50">
-                <td class="px-4 py-3 text-sm text-gray-900">{{ item.id }}</td>
-                <td class="px-4 py-3 text-sm">
-                  <span
-                    class="px-2 py-1 rounded-full text-xs font-medium"
-                    :class="getStatusClass(item.status)"
-                  >
-                    {{ getStatusText(item.status) }}
-                  </span>
-                </td>
-                <td class="px-4 py-3 text-sm text-gray-600">{{ item.userId }}</td>
-                <td class="px-4 py-3 text-sm text-gray-600">{{ item.fileCount }}</td>
-                <td class="px-4 py-3 text-sm text-gray-600">
-                  {{ item.status === 'SUCCESS' ? item.addedCount : '-' }}
-                </td>
-                <td class="px-4 py-3 text-sm text-gray-600">{{ formatDate(item.startTime) }}</td>
-                <td class="px-4 py-3 text-sm text-gray-600">{{ formatDate(item.endTime) }}</td>
-              </tr>
+              <template v-for="item in history" :key="item.id">
+                <tr class="hover:bg-gray-50">
+                  <td class="px-4 py-3 text-sm text-gray-900">{{ item.id }}</td>
+                  <td class="px-4 py-3 text-sm">
+                    <span
+                      class="px-2 py-1 rounded-full text-xs font-medium"
+                      :class="getStatusClass(item.status)"
+                    >
+                      {{ getStatusText(item.status) }}
+                    </span>
+                  </td>
+                  <td class="px-4 py-3 text-sm text-gray-600">{{ item.userId }}</td>
+                  <td class="px-4 py-3 text-sm text-gray-600">{{ item.fileCount }}</td>
+                  <td class="px-4 py-3 text-sm text-gray-600">
+                    {{ item.status === 'SUCCESS' ? item.addedCount : '-' }}
+                  </td>
+                  <td class="px-4 py-3 text-sm text-gray-600">{{ formatDate(item.startTime) }}</td>
+                  <td class="px-4 py-3 text-sm text-gray-600">{{ formatDate(item.endTime) }}</td>
+                  <td class="px-4 py-3 text-sm">
+                    <div v-if="item.files && item.files.length > 0" class="flex flex-col gap-1">
+                      <button
+                        v-for="file in item.files"
+                        :key="file.id"
+                        @click="downloadFile(file.id, file.fileName)"
+                        :disabled="downloadingFiles.has(file.id)"
+                        class="flex items-center gap-1 px-2 py-1 text-xs text-blue-600 hover:text-blue-700 hover:bg-blue-50 rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                        :title="`Скачать ${file.fileName}`"
+                      >
+                        <Download class="h-3 w-3" />
+                        <span class="truncate max-w-[150px]">{{ file.fileName }}</span>
+                      </button>
+                    </div>
+                    <span v-else class="text-gray-400 text-xs">-</span>
+                  </td>
+                </tr>
+              </template>
             </tbody>
           </table>
         </div>
@@ -178,6 +197,7 @@ const history = ref([])
 const loadingHistory = ref(false)
 const currentPage = ref(0)
 const totalPages = ref(0)
+const downloadingFiles = ref(new Set())
 
 function handleFileSelect(event) {
   const files = Array.from(event.target.files)
@@ -248,6 +268,26 @@ async function downloadConflicts() {
   } catch (error) {
     uploadMessage.value = error.message
     uploadSuccess.value = false
+  }
+}
+
+async function downloadFile(fileId, fileName) {
+  if (downloadingFiles.value.has(fileId)) return
+  
+  downloadingFiles.value.add(fileId)
+  try {
+    const { blob, fileName: downloadedFileName } = await api.downloadImportFile(fileId)
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = downloadedFileName || fileName || 'file.yaml'
+    a.click()
+    URL.revokeObjectURL(url)
+  } catch (error) {
+    uploadMessage.value = error.message || 'Ошибка скачивания файла'
+    uploadSuccess.value = false
+  } finally {
+    downloadingFiles.value.delete(fileId)
   }
 }
 

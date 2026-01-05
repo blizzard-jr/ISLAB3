@@ -45,6 +45,31 @@ public class ImportOperation {
     @OneToMany(mappedBy = "operation", cascade = CascadeType.ALL)
     private List<ImportFile> files;
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     // Конструкторы
     public ImportOperation() {
     }

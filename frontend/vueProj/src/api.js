@@ -414,6 +414,31 @@ export const api = {
     
     const blob = await response.blob()
     return blob
+  },
+
+  // Скачать файл импорта по ID файла (ImportFile.id)
+  async downloadImportFile(fileId) {
+    const response = await authFetch(`${API_BASE_URL}/import/${fileId}/file`)
+    
+    if (!response.ok) {
+      if (response.status === 404) {
+        throw new Error('Файл не найден')
+      }
+      throw new Error('Ошибка скачивания файла')
+    }
+    
+    // Получаем имя файла из заголовка Content-Disposition
+    const contentDisposition = response.headers.get('Content-Disposition')
+    let fileName = 'file.yaml'
+    if (contentDisposition) {
+      const fileNameMatch = contentDisposition.match(/filename="?(.+?)"?$/i)
+      if (fileNameMatch) {
+        fileName = fileNameMatch[1]
+      }
+    }
+    
+    const blob = await response.blob()
+    return { blob, fileName }
   }
 }
 

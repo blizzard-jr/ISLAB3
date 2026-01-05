@@ -8,7 +8,10 @@ import org.springframework.stereotype.Repository;
 public interface ImportFileRepository extends JpaRepository<ImportFile, Long> {
     // Базовые методы CRUD предоставляются JpaRepository
     // При необходимости можно добавить кастомные методы
+    ImportFile findByMinioKey(String key);
 }
+
+
 
 
 

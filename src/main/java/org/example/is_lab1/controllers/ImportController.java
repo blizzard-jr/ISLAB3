@@ -1,21 +1,28 @@
 package org.example.is_lab1.controllers;
 
 import org.example.is_lab1.models.dto.ImportOperationDto;
+import org.example.is_lab1.models.entity.ImportFile;
 import org.example.is_lab1.models.entity.Role;
 import org.example.is_lab1.models.entity.User;
+import org.example.is_lab1.repository.ImportFileRepository;
 import org.example.is_lab1.services.ImportService;
+import org.example.is_lab1.services.MinioStorageService;
 import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -25,9 +32,13 @@ import java.util.List;
 @RequestMapping("/api/import")
 public class ImportController {
     private final ImportService importService;
+    private final ImportFileRepository importFileRepository;
+    private final MinioStorageService minioStorageService;
 
-    public ImportController(ImportService service) {
+    public ImportController(ImportService service, ImportFileRepository importFileRepository, MinioStorageService minioStorageService) {
         this.importService = service;
+        this.importFileRepository = importFileRepository;
+        this.minioStorageService = minioStorageService;
     }
 
     @PostMapping("/upload")
@@ -88,5 +99,28 @@ public class ImportController {
                 .header(HttpHeaders.CONTENT_DISPOSITION,
                         "attachment; filename=\"conflicts.txt\"")
                 .body(resource);
+    }
+
+    @GetMapping("/{fileId}/file")
+    public ResponseEntity<Resource> downloadFile(@PathVariable Long fileId) {
+
+        ImportFile file = importFileRepository.findById(fileId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "File not found"));
+
+        String objectKey = file.getMinioKey(); // final/xxx/file.csv
+
+        InputStream stream = minioStorageService.download(objectKey);
+
+        InputStreamResource resource = new InputStreamResource(stream);
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION,
+                        "attachment; filename=\"" + extractFileName(objectKey) + "\"")
+                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                .body(resource);
+    }
+
+    private String extractFileName(String objectKey) {
+        return objectKey.substring(objectKey.lastIndexOf('/') + 1);
     }
 }
