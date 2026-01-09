@@ -19,7 +19,7 @@ creatures:
       power: 472
       weight: 0.77
 
-  - name: "HUMAN_9_0001"
+  - name: "HUMAN_9_0000"
     age: 133
     creatureType: "HUMAN"
     defenseLevel: 27.8

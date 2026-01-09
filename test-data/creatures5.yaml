@@ -15,7 +15,7 @@ creatures:
       capital: false
       populationDensity: 166
 
-  - name: "HOBBIT_5_0001"
+  - name: "HOBBIT_5_0000"
     age: 127
     creatureType: "HOBBIT"
     defenseLevel: 12.0

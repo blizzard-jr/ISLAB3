@@ -66,6 +66,7 @@ public class ImportService {
         this.minioStorageService = minioStorageService;
     }
 
+    @Transactional
     public Long importFromYaml(List<MultipartFile> files, String userId) {
         ImportOperation operation = new ImportOperation();
         operation.setUserId(userId);
@@ -98,6 +99,8 @@ public class ImportService {
         ImportOperation operation = importOperationRepository.findById(operationId)
                 .orElseThrow(() -> new EntityNotFoundException("Operation not found"));
 
+        String key = null;
+        ImportFile importFile = null;
         try {
             conflictLogger.clearLog();
             operation.setStatus(ImportStatus.IN_PROGRESS);
@@ -108,21 +111,20 @@ public class ImportService {
             StringBuilder errors = new StringBuilder();
 
             for (MultipartFile fc : files) {
+                importFile = operation.getFiles().stream()
+                        .filter(f -> f.getFileName().equals(fc.getOriginalFilename()))
+                        .findFirst()
+                        .orElseThrow();
                 String importId = UUID.randomUUID().toString();
-                String key = minioStorageService.uploadTemp(fc, importId);
+                key = minioStorageService.upload(fc, importId);
+                importFile.setMinioKey(key);
+                importFileRepository.save(importFile);
                 FileImportResult result = processSingleFile(new FileContent(fc.getOriginalFilename(), fc.getBytes()), operation, key);
                 totalAdded += result.addedCount();
-                
-//                if (result.status() == ImportStatus.FAILED) {
-//                    allSuccess = false;
-//                    if (errors.length() > 0) errors.append("; ");
-//                    errors.append(result.errorMessage());
-//                    minioStorageService.delete(key);
-//                }
-//                minioStorageService.promoteToFinal(key);
+
             }
 
-            operation.setStatus(allSuccess ? ImportStatus.SUCCESS : ImportStatus.FAILED);
+            operation.setStatus(ImportStatus.SUCCESS);
             operation.setAddedCount(totalAdded);
             operation.setEndTime(LocalDateTime.now());
 
@@ -133,11 +135,13 @@ public class ImportService {
             importOperationRepository.save(operation);
 
         } catch (Exception e) {
+            minioStorageService.delete(key, importFile);
             log.error("Error processing import operation {}", operationId, e);
             operation.setStatus(ImportStatus.FAILED);
             operation.setErrorMessage(truncateErrorMessage(e.getMessage()));
             operation.setEndTime(LocalDateTime.now());
             importOperationRepository.save(operation);
+            throw new RuntimeException(e);
         }
     }
     
@@ -149,10 +153,10 @@ public class ImportService {
 
     @Transactional(isolation = org.springframework.transaction.annotation.Isolation.READ_COMMITTED)
     protected FileImportResult processSingleFile(FileContent fileContent, ImportOperation operation, String key) {
-        for(ImportFile el : operation.getFiles()){
-            log.warn(el.getFileName() + "filename from operation");
-            log.warn(fileContent.fileName() + "filename from filecontent");
-        }
+//        for(ImportFile el : operation.getFiles()){
+//            log.warn(el.getFileName() + "filename from operation");
+//            log.warn(fileContent.fileName() + "filename from filecontent");
+//        }
         ImportFile importFile = operation.getFiles().stream()
                 .filter(f -> f.getFileName().equals(fileContent.fileName()))
                 .findFirst()
@@ -160,6 +164,7 @@ public class ImportService {
 
         try {
             importFile.setStatus(ImportStatus.IN_PROGRESS);
+            importFile.setMinioKey(key);
             importFileRepository.save(importFile);
 
             ImportRequestDTO request = YamlConfig.getYamlMapper().readValue(
@@ -170,32 +175,28 @@ public class ImportService {
             int addedCount = 0;
 
             for (BookCreatureDTO dto : request.creatures()) {
-                try {
-                    validateCreature(dto);
-                    Optional<BookCreature> existing = creatureRepository.findByName(dto.name());
-                    if (existing.isPresent()) {
-                        BookCreature resolved = resolveConflict(
-                                existing.get(),
-                                dto,
-                                operation.getId()
-                        );
-                        creatureRepository.save(resolved);
-                    } else {
-                        BookCreature creature = mapper.toEntity(dto);
-                        creatureRepository.save(creature);
-                        addedCount++;
-                        notificationService.notifyCreated(creature.getId(), mapper.toDto(creature));
-                    }
-
-                } catch (Exception e) {
-                    log.warn("Error processing creature from file {}: {}",
-                            fileContent.fileName(), e.getMessage());
+                log.warn("Добавляем сущность: " + dto.name());
+                validateCreature(dto);
+                Optional<BookCreature> existing = creatureRepository.findByName(dto.name());
+                log.warn("Проверяем сущность: " + (existing.isPresent() ? "Найдена с именем: " + existing.get().getName() : "Сущность не найдена с таким именем"));
+                if (existing.isPresent()) {
+                    BookCreature resolved = resolveConflict(
+                            existing.get(),
+                            dto,
+                            operation.getId()
+                    );
+                    creatureRepository.save(resolved);
+                } else {
+                    BookCreature creature = mapper.toEntity(dto);
+                    creatureRepository.save(creature);
+                    addedCount++;
+                    notificationService.notifyCreated(creature.getId(), mapper.toDto(creature));
                 }
+
+
             }
 
             importFile.setStatus(ImportStatus.SUCCESS);
-            String finalKey = minioStorageService.promoteToFinal(key);
-            importFile.setMinioKey(finalKey);
             importFile.setAddedCount(addedCount);
             importFileRepository.save(importFile);
 
@@ -206,8 +207,7 @@ public class ImportService {
             importFile.setStatus(ImportStatus.FAILED);
             importFile.setErrorMessage(truncateErrorMessage(e.getMessage()));
             importFileRepository.save(importFile);
-
-            return new FileImportResult(ImportStatus.FAILED, 0, e.getMessage());
+            throw new RuntimeException(e);
         }
     }
 

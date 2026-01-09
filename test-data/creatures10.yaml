@@ -15,7 +15,7 @@ creatures:
       capital: false
       populationDensity: 4
 
-  - name: "ORC_10_0001"
+  - name: "ORC_10_0000"
     age: 116
     creatureType: "GOLLUM"
     defenseLevel: 39.4

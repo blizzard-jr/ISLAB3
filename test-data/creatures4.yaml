@@ -1,5 +1,5 @@
 creatures:
-  - name: "DWARF_4_0000"
+  - name: ""
     age: 63
     creatureType: "HUMAN"
     defenseLevel: 37.1

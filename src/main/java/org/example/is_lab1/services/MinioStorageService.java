@@ -2,24 +2,33 @@ package org.example.is_lab1.services;
 
 import io.minio.*;
 import jakarta.annotation.PostConstruct;
+import org.example.is_lab1.models.entity.ImportFile;
+import org.example.is_lab1.models.entity.ImportStatus;
+import org.example.is_lab1.repository.ImportFileRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.InputStream;
+import java.util.List;
 
 @Service
 public class MinioStorageService {
 
+    private static final Logger log = LoggerFactory.getLogger(MinioStorageService.class);
     private final MinioClient minioClient;
     private final String bucket;
+    private final ImportFileRepository importFileRepository;
 
     public MinioStorageService(
             MinioClient minioClient,
-            @Value("${minio.bucket}") String bucket
-    ) {
+            @Value("${minio.bucket}") String bucket,
+            ImportFileRepository importFileRepository) {
         this.minioClient = minioClient;
         this.bucket = bucket;
+        this.importFileRepository = importFileRepository;
     }
 
     @PostConstruct
@@ -49,10 +58,10 @@ public class MinioStorageService {
      * Phase 1 (PREPARE)
      * Загружаем файл во временную область
      */
-    public String uploadTemp(MultipartFile file, String importId) {
+    public String upload(MultipartFile file, String importId) {
         try {
             String objectKey =
-                    "tmp/" + importId + "/" + file.getOriginalFilename();
+                    "final/" + importId + "/" + file.getOriginalFilename();
 
             minioClient.putObject(
                     PutObjectArgs.builder()
@@ -74,47 +83,47 @@ public class MinioStorageService {
         }
     }
 
-    /**
-     * Phase 2 (COMMIT)
-     * Переводим файл из TEMP в FINAL
-     */
-    public String promoteToFinal(String tempKey) {
-        try {
-            String finalKey = tempKey.replaceFirst("tmp/", "final/");
-
-            // copy tmp → final
-            minioClient.copyObject(
-                    CopyObjectArgs.builder()
-                            .bucket(bucket)
-                            .object(finalKey)
-                            .source(
-                                    CopySource.builder()
-                                            .bucket(bucket)
-                                            .object(tempKey)
-                                            .build()
-                            )
-                            .build()
-            );
-
-            // delete tmp
-            minioClient.removeObject(
-                    RemoveObjectArgs.builder()
-                            .bucket(bucket)
-                            .object(tempKey)
-                            .build()
-            );
-
-            return finalKey;
-
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to promote file to final", e);
-        }
-    }
+//    /**
+//     * Phase 2 (COMMIT)
+//     * Переводим файл из TEMP в FINAL
+//     */
+//    public String promoteToFinal(String tempKey) {
+//        try {
+//            String finalKey = tempKey.replaceFirst("tmp/", "final/");
+//
+//            // copy tmp → final
+//            minioClient.copyObject(
+//                    CopyObjectArgs.builder()
+//                            .bucket(bucket)
+//                            .object(finalKey)
+//                            .source(
+//                                    CopySource.builder()
+//                                            .bucket(bucket)
+//                                            .object(tempKey)
+//                                            .build()
+//                            )
+//                            .build()
+//            );
+//
+//            // delete tmp
+//            minioClient.removeObject(
+//                    RemoveObjectArgs.builder()
+//                            .bucket(bucket)
+//                            .object(tempKey)
+//                            .build()
+//            );
+//
+//            return finalKey;
+//
+//        } catch (Exception e) {
+//            throw new RuntimeException("Failed to promote file to final", e);
+//        }
+//    }
 
     /**
      * COMPENSATING ACTION (ROLLBACK)
      */
-    public void delete(String key) {
+    public void delete(String key, ImportFile file) {
         try {
             minioClient.removeObject(
                     RemoveObjectArgs.builder()
@@ -122,10 +131,31 @@ public class MinioStorageService {
                             .object(key)
                             .build()
             );
+            check();
         } catch (Exception e) {
-            // логируем, но не падаем
+            file.setStatus(ImportStatus.REMOVE_REQUIRES);
+            importFileRepository.save(file);
             System.err.println("Failed to delete object " + key + ": " + e.getMessage());
         }
+    }
+
+    public int check(){
+        List<ImportFile> list = importFileRepository.findAllByStatus(ImportStatus.REMOVE_REQUIRES);
+        int count = 0;
+        for(ImportFile file : list){
+            try {
+                minioClient.removeObject(
+                        RemoveObjectArgs.builder()
+                                .bucket(bucket)
+                                .object(file.getMinioKey())
+                                .build()
+                );
+                count++;
+            }catch(Exception e){
+                log.warn("Can not delete now");
+            }
+        }
+        return count;
     }
 
     public InputStream download(String objectKey) {
