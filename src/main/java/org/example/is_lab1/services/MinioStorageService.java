@@ -54,10 +54,7 @@ public class MinioStorageService {
         }
     }
 
-    /**
-     * Phase 1 (PREPARE)
-     * Загружаем файл во временную область
-     */
+
     public String upload(MultipartFile file, String importId) {
         try {
             String objectKey =
@@ -120,9 +117,7 @@ public class MinioStorageService {
 //        }
 //    }
 
-    /**
-     * COMPENSATING ACTION (ROLLBACK)
-     */
+
     public void delete(String key, ImportFile file) {
         try {
             minioClient.removeObject(

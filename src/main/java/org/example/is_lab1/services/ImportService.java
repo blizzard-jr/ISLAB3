@@ -50,6 +50,8 @@ public class ImportService {
     @Lazy
     @Autowired
     private ImportService self;
+    @Autowired
+    private ImportStatusService importStatusService;
 
     public ImportService(InteractRepository creatureRepository,
                          ImportOperationRepository importOperationRepository,
@@ -66,7 +68,6 @@ public class ImportService {
         this.minioStorageService = minioStorageService;
     }
 
-    @Transactional
     public Long importFromYaml(List<MultipartFile> files, String userId) {
         ImportOperation operation = new ImportOperation();
         operation.setUserId(userId);
@@ -88,7 +89,15 @@ public class ImportService {
                 .collect(Collectors.toList());
         importFiles = importFileRepository.saveAll(importFiles);
         savedOperation.setFiles(importFiles);
-        self.processImportAsync(savedOperation.getId(), files);
+        try {
+            self.processImportAsync(savedOperation.getId(), files);
+        }catch(Exception e){
+            operation.setStatus(ImportStatus.FAILED);
+            operation.setErrorMessage("Что-то пошло не так. Произошёл откат транзакции");
+            operation.setFiles(null);
+            operation.setEndTime(LocalDateTime.now());
+            importOperationRepository.save(operation);
+        }
         return savedOperation.getId();
     }
 
@@ -137,10 +146,6 @@ public class ImportService {
         } catch (Exception e) {
             minioStorageService.delete(key, importFile);
             log.error("Error processing import operation {}", operationId, e);
-            operation.setStatus(ImportStatus.FAILED);
-            operation.setErrorMessage(truncateErrorMessage(e.getMessage()));
-            operation.setEndTime(LocalDateTime.now());
-            importOperationRepository.save(operation);
             throw new RuntimeException(e);
         }
     }
@@ -204,9 +209,10 @@ public class ImportService {
 
         } catch (Exception e) {
             log.error("Error processing file {}", fileContent.fileName(), e);
-            importFile.setStatus(ImportStatus.FAILED);
-            importFile.setErrorMessage(truncateErrorMessage(e.getMessage()));
-            importFileRepository.save(importFile);
+            importStatusService.markFailed(importFile, "Проблема с файлом " + importFile.getFileName() + ", проверьте ограничения уникальности и формат файла");
+//            importFile.setStatus(ImportStatus.FAILED);
+//            importFile.setErrorMessage(truncateErrorMessage(e.getMessage()));
+//            importFileRepository.save(importFile);
             throw new RuntimeException(e);
         }
     }
