@@ -76,7 +76,23 @@ public class ImportService {
         operation.setFileCount(files.size());
         operation.setAddedCount(0);
         final ImportOperation savedOperation = importOperationRepository.save(operation);
+        try {
+            self.processImportAsync(savedOperation.getId(), files);
+        }catch(Exception e){
+            operation.setStatus(ImportStatus.FAILED);
+            operation.setErrorMessage("Что-то пошло не так. Произошёл откат транзакции: " + e.getMessage());
+            operation.setFiles(null);
+            operation.setEndTime(LocalDateTime.now());
+            importOperationRepository.save(operation);
+        }
+        return savedOperation.getId();
+    }
 
+
+//    @Async
+    @Transactional(isolation = org.springframework.transaction.annotation.Isolation.READ_COMMITTED)
+    public void processImportAsync(Long operationId, List<MultipartFile> files) {
+        ImportOperation savedOperation = importOperationRepository.getReferenceById(operationId);
         List<ImportFile> importFiles = files.stream()
                 .map(fc -> {
                     ImportFile importFile = new ImportFile();
@@ -89,22 +105,6 @@ public class ImportService {
                 .collect(Collectors.toList());
         importFiles = importFileRepository.saveAll(importFiles);
         savedOperation.setFiles(importFiles);
-        try {
-            self.processImportAsync(savedOperation.getId(), files);
-        }catch(Exception e){
-            operation.setStatus(ImportStatus.FAILED);
-            operation.setErrorMessage("Что-то пошло не так. Произошёл откат транзакции");
-            operation.setFiles(null);
-            operation.setEndTime(LocalDateTime.now());
-            importOperationRepository.save(operation);
-        }
-        return savedOperation.getId();
-    }
-
-
-//    @Async
-    @Transactional(isolation = org.springframework.transaction.annotation.Isolation.READ_COMMITTED)
-    public void processImportAsync(Long operationId, List<MultipartFile> files) {
         ImportOperation operation = importOperationRepository.findById(operationId)
                 .orElseThrow(() -> new EntityNotFoundException("Operation not found"));
 
@@ -146,7 +146,7 @@ public class ImportService {
         } catch (Exception e) {
             minioStorageService.delete(key, importFile);
             log.error("Error processing import operation {}", operationId, e);
-            throw new RuntimeException(e);
+            throw new RuntimeException(e.getMessage());
         }
     }
     
@@ -209,11 +209,11 @@ public class ImportService {
 
         } catch (Exception e) {
             log.error("Error processing file {}", fileContent.fileName(), e);
-            importStatusService.markFailed(importFile, "Проблема с файлом " + importFile.getFileName() + ", проверьте ограничения уникальности и формат файла");
+//            importStatusService.markFailed(importFile.getId(), "Проблема с файлом " + importFile.getFileName() + ", проверьте ограничения уникальности и формат файла");
 //            importFile.setStatus(ImportStatus.FAILED);
 //            importFile.setErrorMessage(truncateErrorMessage(e.getMessage()));
 //            importFileRepository.save(importFile);
-            throw new RuntimeException(e);
+            throw new RuntimeException("Проблема с файлом " + importFile.getFileName() + ", проверьте ограничения уникальности и формат файла");
         }
     }
 

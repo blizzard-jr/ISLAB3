@@ -1,6 +1,5 @@
 <infinispan>
     <cache-container>
-        <!-- Кеш для Hibernate L2 -->
         <local-cache name="entity">
             <encoding>
                 <key media-type="application/x-java-object"/>
@@ -8,7 +7,6 @@
             </encoding>
         </local-cache>
 
-        <!-- Кеш таймстемпов (обязателен Hibernate) -->
         <local-cache name="hibernate-timestamps">
             <encoding>
                 <key media-type="application/x-java-object"/>
@@ -16,7 +14,6 @@
             </encoding>
         </local-cache>
 
-        <!-- Кеш запросов -->
         <local-cache name="hibernate-query">
             <encoding>
                 <key media-type="application/x-java-object"/>

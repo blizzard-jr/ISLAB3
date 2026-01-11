@@ -21,14 +21,16 @@ public class MinioStorageService {
     private final MinioClient minioClient;
     private final String bucket;
     private final ImportFileRepository importFileRepository;
+    private final ImportStatusService importStatusService;
 
     public MinioStorageService(
             MinioClient minioClient,
             @Value("${minio.bucket}") String bucket,
-            ImportFileRepository importFileRepository) {
+            ImportFileRepository importFileRepository, ImportStatusService importStatusService) {
         this.minioClient = minioClient;
         this.bucket = bucket;
         this.importFileRepository = importFileRepository;
+        this.importStatusService = importStatusService;
     }
 
     @PostConstruct
@@ -128,8 +130,9 @@ public class MinioStorageService {
             );
             check();
         } catch (Exception e) {
-            file.setStatus(ImportStatus.REMOVE_REQUIRES);
-            importFileRepository.save(file);
+//            file.setStatus(ImportStatus.REMOVE_REQUIRES);
+//            importFileRepository.save(file);
+            importStatusService.markRemoveRequired(file);
             System.err.println("Failed to delete object " + key + ": " + e.getMessage());
         }
     }

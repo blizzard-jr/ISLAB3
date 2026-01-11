@@ -137,7 +137,8 @@
                   <td class="px-4 py-3 text-sm text-gray-600">{{ formatDate(item.startTime) }}</td>
                   <td class="px-4 py-3 text-sm text-gray-600">{{ formatDate(item.endTime) }}</td>
                   <td class="px-4 py-3 text-sm">
-                    <div v-if="item.files && item.files.length > 0" class="flex flex-col gap-1">
+                    <!-- Показываем файлы только если операция успешна и есть файлы -->
+                    <div v-if="item.status === 'SUCCESS' && item.files && item.files.length > 0" class="flex flex-col gap-1">
                       <button
                         v-for="file in item.files"
                         :key="file.id"
@@ -150,6 +151,11 @@
                         <span class="truncate max-w-[150px]">{{ file.fileName }}</span>
                       </button>
                     </div>
+                    <!-- Показываем ошибку если операция провалилась -->
+                    <div v-else-if="item.status === 'FAILED' && item.errorMessage" class="text-red-600 text-xs">
+                      <span class="font-medium">Ошибка:</span> {{ item.errorMessage }}
+                    </div>
+                    <!-- Иначе показываем прочерк -->
                     <span v-else class="text-gray-400 text-xs">-</span>
                   </td>
                 </tr>
