@@ -5,12 +5,9 @@ import java.nio.ByteBuffer;
 import java.util.Base64;
 import java.util.UUID;
 
-/**
- * Lightweight implementation of {@link Xid} backed by UUIDs,
- * serialized as Base64 to keep it database-friendly.
- */
+
 public class SimpleXid implements Xid {
-    private static final int FORMAT_ID = 0x49534C; // "ISL" marker to simplify debugging
+    private static final int FORMAT_ID = 0x49534C; 
     private final byte[] globalTransactionId;
     private final byte[] branchQualifier;
 
