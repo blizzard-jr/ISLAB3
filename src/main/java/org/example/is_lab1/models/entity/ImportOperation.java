@@ -41,6 +41,13 @@ public class ImportOperation {
     @Column(columnDefinition = "TEXT")
     private String errorMessage;
 
+    @Column(name = "xa_xid", length = 200)
+    private String xaXid;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "xa_status")
+    private XaStatus xaStatus;
+
     // Связь с файлами (опционально, если нужно хранить метаданные)
     @OneToMany(mappedBy = "operation", cascade = CascadeType.ALL)
     private List<ImportFile> files;
@@ -107,6 +114,14 @@ public class ImportOperation {
         return errorMessage;
     }
 
+    public String getXaXid() {
+        return xaXid;
+    }
+
+    public XaStatus getXaStatus() {
+        return xaStatus;
+    }
+
     public List<ImportFile> getFiles() {
         return files;
     }
@@ -144,8 +159,15 @@ public class ImportOperation {
         this.errorMessage = errorMessage;
     }
 
+    public void setXaXid(String xaXid) {
+        this.xaXid = xaXid;
+    }
+
+    public void setXaStatus(XaStatus xaStatus) {
+        this.xaStatus = xaStatus;
+    }
+
     public void setFiles(List<ImportFile> files) {
         this.files = files;
     }
 }
-

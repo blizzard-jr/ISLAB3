@@ -17,6 +17,7 @@ import org.example.is_lab1.repository.ImportFileRepository;
 import org.example.is_lab1.repository.ImportOperationRepository;
 import org.example.is_lab1.repository.InteractRepository;
 import org.example.is_lab1.utils.BookCreatureMapper;
+import org.example.is_lab1.transactions.SimpleXid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Async;
@@ -32,6 +33,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import java.util.ArrayList;
 
 record FileContent(String fileName, byte[] content) {}
 
@@ -45,6 +47,7 @@ public class ImportService {
     private final ConflictLogger conflictLogger;
     private final WebSocketNotificationService notificationService;
     private final MinioStorageService minioStorageService;
+    private final ApplicationXaManager xaManager;
     
 
     @Lazy
@@ -58,7 +61,7 @@ public class ImportService {
                          ImportFileRepository importFileRepository,
                          BookCreatureMapper mapper,
                          ConflictLogger conflictLogger,
-                         WebSocketNotificationService notificationService, MinioStorageService minioStorageService) {
+                         WebSocketNotificationService notificationService, MinioStorageService minioStorageService, ApplicationXaManager xaManager) {
         this.creatureRepository = creatureRepository;
         this.importOperationRepository = importOperationRepository;
         this.importFileRepository = importFileRepository;
@@ -66,6 +69,7 @@ public class ImportService {
         this.conflictLogger = conflictLogger;
         this.notificationService = notificationService;
         this.minioStorageService = minioStorageService;
+        this.xaManager = xaManager;
     }
 
     public Long importFromYaml(List<MultipartFile> files, String userId) {
@@ -76,9 +80,11 @@ public class ImportService {
         operation.setFileCount(files.size());
         operation.setAddedCount(0);
         final ImportOperation savedOperation = importOperationRepository.save(operation);
+        SimpleXid xid = xaManager.begin(savedOperation);
         try {
             self.processImportAsync(savedOperation.getId(), files);
         }catch(Exception e){
+            xaManager.rollback(xid, savedOperation.getId(), e.getMessage());
             operation.setStatus(ImportStatus.FAILED);
             operation.setErrorMessage("Что-то пошло не так. Произошёл откат транзакции: " + e.getMessage());
             operation.setFiles(null);
@@ -107,13 +113,15 @@ public class ImportService {
         savedOperation.setFiles(importFiles);
         ImportOperation operation = importOperationRepository.findById(operationId)
                 .orElseThrow(() -> new EntityNotFoundException("Operation not found"));
-
+        SimpleXid xid = xaManager.ensureXid(operation);
+        List<ImportFile> touchedFiles = new ArrayList<>();
         String key = null;
         ImportFile importFile = null;
         try {
             conflictLogger.clearLog();
             operation.setStatus(ImportStatus.IN_PROGRESS);
             importOperationRepository.save(operation);
+            xaManager.prepare(operationId);
 
             int totalAdded = 0;
             boolean allSuccess = true;
@@ -128,6 +136,7 @@ public class ImportService {
                 key = minioStorageService.upload(fc, importId);
                 importFile.setMinioKey(key);
                 importFileRepository.save(importFile);
+                touchedFiles.add(importFile);
                 FileImportResult result = processSingleFile(new FileContent(fc.getOriginalFilename(), fc.getBytes()), operation, key);
                 totalAdded += result.addedCount();
 
@@ -142,9 +151,15 @@ public class ImportService {
             }
 
             importOperationRepository.save(operation);
+            xaManager.commit(xid, operationId);
 
         } catch (Exception e) {
-            minioStorageService.delete(key, importFile);
+            for (ImportFile file : touchedFiles) {
+                if (file.getMinioKey() != null) {
+                    minioStorageService.delete(file.getMinioKey(), file);
+                }
+            }
+            xaManager.rollback(xid, operationId, e.getMessage());
             log.error("Error processing import operation {}", operationId, e);
             throw new RuntimeException(e.getMessage());
         }
